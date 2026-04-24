@@ -1,4 +1,4 @@
-﻿namespace ProyectoIProgra2.Entities
+﻿namespace ProyectoIProgra2.Entidades
 {
     public class Cliente
     {
