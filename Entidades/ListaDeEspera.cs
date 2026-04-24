@@ -1,6 +1,6 @@
-﻿namespace ProyectoIProgra2.Entities
+﻿namespace ProyectoIProgra2.Entidades
 {
-    public class ListaEspera
+    public class ListaDeEspera
     {
         public int Id { get; set; }
         public int ClienteId { get; set; }
