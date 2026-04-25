@@ -1,33 +1,33 @@
 //Program.cs
+using ProyectoIProgra2.Data;
 using ProyectoIProgra2.Servicios;
-using ProyectoIProgra2.Servicios.Interfaces;
-using ProyectoIProgra2.RestaurantDbContext;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Servicios.AddScoped<RestaurantDbTestContext>();
+builder.Services.AddScoped<MyAppDbContext>();
 
-builder.Servicios.AddScoped<IBloqueoMesaServicio, BloqueoMesaServicio>();
+builder.Services.AddScoped<IBloqueoMesaServicio, BloqueoMesaServicio>();
 
-builder.Servicios.AddScoped<IClienteServicio, ClienteServicio>();
+builder.Services.AddScoped<IClienteServicio, ClienteServicio>();
 
-builder.Servicios.AddScoped<IEstadoDeReservaServicio, EstadoDeReservaServicio>();
+builder.Services.AddScoped<IEstadoDeReservaServicio, EstadoDeReservaServicio>();
 
-builder.Servicios.AddScoped<IListaDeEsperaServicio, ListaDeEsperaServicio>();
+builder.Services.AddScoped<IListaDeEsperaServicio, ListaDeEsperaServicio>();
 
-builder.Servicios.AddScoped<IMesaServicio, MesaServicio>();
+builder.Services.AddScoped<IMesaServicio, MesaServicio>();
 
-builder.Servicios.AddScoped<IReservaServicio, ReservaServicio>();
+builder.Services.AddScoped<IReservaServicio, ReservaServicio>();
 
-builder.Servicios.AddScoped<ITurnoServicio, TurnoServicio>();
+builder.Services.AddScoped<ITurnoServicio, TurnoServicio>();
 
-builder.Servicios.AddScoped<IZonaServicio, ZonaServicio>();
+builder.Services.AddScoped<IZonaServicio, ZonaServicio>();
 
-builder.Servicios.AddControllers();
+builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Servicios.AddOpenApi();
+builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
