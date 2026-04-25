@@ -6,7 +6,7 @@ public interface IClienteServicio
 
     public Cliente BuscarClientePorId(int clienteId);
 
-    public Cliente BuscarClientePorCedula(string cedula);
+    public Cliente BuscarClientePorCedula(int cedula);
 
     public List<Reserva> ObtenerReservasDelCliente(int clienteId);
 
