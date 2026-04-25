@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProyectoProgra2.Entidades;
-
+using ProyectoIProgra2.Entidades;
 namespace ProyectoProgra2.Data
 {
 
-    public class MyDbContext : DbContext
+    public class MyAppDbContext : DbContext
     {
-        public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
+        public MyAppDbContext(DbContextOptionsBuilder options)
         {
+            options.UseInMemoryDatabase("MyAppDbContext");
         }
-
+        
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Mesa> Mesas { get; set; }
         public DbSet<Reserva> Reservas { get; set; }
@@ -22,7 +22,7 @@ namespace ProyectoProgra2.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-        
+
         }
     }
 }
