@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProyectoIProgra2.Entidades;
-namespace ProyectoProgra2.Data
+namespace ProyectoIProgra2.Data
 {
 
     public class MyAppDbContext : DbContext
