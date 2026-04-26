@@ -13,4 +13,5 @@ public interface ITurnoServicio
     public Turno ActualizarTurno(int turnoId, Turno turno);
 
     public void EliminarTurno(int turnoId);
+    public bool EstaDentroDeTurno(DateTime inicio, DateTime fin);
 }

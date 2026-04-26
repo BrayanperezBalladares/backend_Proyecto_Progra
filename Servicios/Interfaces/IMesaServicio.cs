@@ -19,4 +19,5 @@ public interface IMesaServicio
     public Mesa AsignarReservaAMesa(int mesaId, int reservaId);
 
     public void EliminarMesa(int mesaId);
+    public List<Mesa> ObtenerMesasDisponibles(DateTime inicio, DateTime fin, int capacidad);
 }

@@ -21,4 +21,8 @@ public interface IReservaServicio
     public Reserva AsignarMesa(int reservaId, int mesaId);
 
     public void EliminarReserva(int reservaId);
+
+    public bool ExisteInterferenciaDeHorario(int mesaId, DateTime inicio, DateTime fin);
+    public bool ValidarReserva(Reserva reserva);
+    void LiberarMesa(int ReservaId);
 }

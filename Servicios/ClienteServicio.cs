@@ -5,60 +5,44 @@ namespace ProyectoIProgra2.Servicios
 {
     public class ClienteServicio : IClienteServicio
     {
-        private readonly MyAppDbContext _myDbContext;
-        public ClienteServicio(MyAppDbContext myDbContext)
+        public Cliente ActualizarCliente(int clienteId, Cliente cliente)
         {
-            _myDbContext = myDbContext;
+            throw new NotImplementedException();
         }
-        public List<Cliente> ListarClientes()
+
+        public Cliente BuscarClientePorCedula(int cedula)
         {
-            return _myDbContext.Clientes.ToList();
+            throw new NotImplementedException();
         }
 
         public Cliente BuscarClientePorId(int clienteId)
         {
-            var result = _myDbContext.Clientes.Find(clienteId);
-            return result;
+            throw new NotImplementedException();
         }
-        public Cliente BuscarClientePorCedula(int cedula)
-        {
-            var result = _myDbContext.Clientes
-                .FirstOrDefault(c => c.Ced == cedula);
 
-            return result;
-        }
-        public List<Reserva> ObtenerReservasDelCliente(int clienteId)
-        {
-            var result = _myDbContext.Reservas
-         .Where(r => r.ClienteId == clienteId)
-         .ToList();
-
-            return result;
-        }
         public Cliente CrearCliente(Cliente cliente)
         {
-            _myDbContext.Clientes.Add(cliente);
-            _myDbContext.SaveChanges();
-            return cliente;
-        }
-        public Cliente ActualizarCliente(int clienteId, Cliente cliente)
-        {
-            var result = _myDbContext.Clientes.Find(clienteId);
-            result.Nombre = cliente.Nombre;
-            _myDbContext.Update(result);
-            _myDbContext.SaveChanges();
-            return result;
+            throw new NotImplementedException();
         }
 
         public void EliminarCliente(int clienteId)
         {
-            var result = _myDbContext.Clientes.Find(clienteId);
-            _myDbContext.Clientes.Remove(result);
-            _myDbContext.SaveChanges();
+            throw new NotImplementedException();
         }
 
-        
+        public bool ExisteClientePorCedula(int cedula)
+        {
+            throw new NotImplementedException();
+        }
 
-        
+        public List<Cliente> ListarClientes()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Reserva> ObtenerReservasDelCliente(int clienteId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

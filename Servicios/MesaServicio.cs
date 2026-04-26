@@ -48,5 +48,10 @@ namespace ProyectoIProgra2.Servicios
         {
             throw new NotImplementedException();
         }
+
+        public List<Mesa> ObtenerMesasDisponibles(DateTime inicio, DateTime fin, int capacidad)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

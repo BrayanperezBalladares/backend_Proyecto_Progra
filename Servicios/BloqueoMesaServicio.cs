@@ -24,9 +24,20 @@ namespace ProyectoIProgra2.Servicios
             throw new NotImplementedException();
         }
 
+        public bool EstaMesaBloqueada(int mesaId, DateTime inicio, DateTime fin)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ExisteInterferenciaBloqueoMesa(int mesaId, DateTime inicio, DateTime fin)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<BloqueoMesa> ObtenerBloqueoPorMesaId(int mesaId)
         {
             throw new NotImplementedException();
         }
     }
 }
+       

@@ -24,6 +24,11 @@ namespace ProyectoIProgra2.Servicios
             throw new NotImplementedException();
         }
 
+        public Reserva ConvertirAReserva(int listaId, int mesaid)
+        {
+            throw new NotImplementedException();
+        }
+
         public ListaDeEspera CrearListaDeEspera(ListaDeEspera lista)
         {
             throw new NotImplementedException();
@@ -34,12 +39,22 @@ namespace ProyectoIProgra2.Servicios
             throw new NotImplementedException();
         }
 
+        public bool HayPersonasEnListaDeEspera(int turnoId)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<ListaDeEspera> ListarListaEspera()
         {
             throw new NotImplementedException();
         }
 
         public List<ListaDeEspera> ObtenerListaPorTurno(int turnoId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ListaDeEspera ObtenerSiguienteEnListaDeEspera(int turnoId)
         {
             throw new NotImplementedException();
         }
