@@ -5,9 +5,18 @@ namespace ProyectoIProgra2.Servicios
 {
     public class ClienteServicio : IClienteServicio
     {
+        private readonly MyAppDbContext _MyAppDbContext;
+        public ClienteServicio(MyAppDbContext myAppDbContext)
+        {   
+            _MyAppDbContext = myAppDbContext;
+        }
         public Cliente ActualizarCliente(int clienteId, Cliente cliente)
         {
-            throw new NotImplementedException();
+            var result = _MyAppDbContext.Clientes.Find(clienteId);
+            result.ClienteId = cliente.ClienteId;
+            _MyAppDbContext.Clientes.Update(result);
+            _MyAppDbContext.SaveChanges();
+            return result;
         }
 
         public Cliente BuscarClientePorCedula(int cedula)
@@ -17,17 +26,22 @@ namespace ProyectoIProgra2.Servicios
 
         public Cliente BuscarClientePorId(int clienteId)
         {
-            throw new NotImplementedException();
+            var result = _MyAppDbContext.Clientes.Find(clienteId);
+            return result;
         }
 
         public Cliente CrearCliente(Cliente cliente)
         {
-            throw new NotImplementedException();
+            _MyAppDbContext.Clientes.Add(cliente);
+            _MyAppDbContext.SaveChanges();
+            return cliente;
         }
 
         public void EliminarCliente(int clienteId)
         {
-            throw new NotImplementedException();
+            var result = _MyAppDbContext.Clientes.Find(clienteId);
+            _MyAppDbContext.Clientes.Remove(result);
+            _MyAppDbContext.SaveChanges();
         }
 
         public bool ExisteClientePorCedula(int cedula)
@@ -37,7 +51,7 @@ namespace ProyectoIProgra2.Servicios
 
         public List<Cliente> ListarClientes()
         {
-            throw new NotImplementedException();
+            return _MyAppDbContext.Clientes.ToList();
         }
 
         public List<Reserva> ObtenerReservasDelCliente(int clienteId)

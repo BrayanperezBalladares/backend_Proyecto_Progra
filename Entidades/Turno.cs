@@ -2,7 +2,7 @@
 {
     public class Turno
     {
-        public int Id { get; set; }
+        public int TurnoId { get; set; }
         public DateTime HorarioIncio { get; set; }
         public DateTime HorarioFin { get; set; }
     }

@@ -2,7 +2,7 @@
 {
     public class Reserva
     {
-        public int Id { get; set; }
+        public int ReservaId { get; set; }
         public int TurnoId { get; set; }
         public int EstadoDeReservaId { get; set; }
         public int CantidaPersonas { get; set; }
