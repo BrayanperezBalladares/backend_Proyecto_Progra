@@ -2,7 +2,7 @@
 {
     public class ListaDeEspera
     {
-        public int Id { get; set; }
+        public int ListaDeEsperaId { get; set; }
         public int ClienteId { get; set; }
         public int TurnoId { get; set; }
         public int CantidadPersonas { get; set; }

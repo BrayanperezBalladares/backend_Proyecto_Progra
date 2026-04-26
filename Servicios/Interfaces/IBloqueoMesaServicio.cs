@@ -4,7 +4,7 @@ public interface IBloqueoMesaServicio
 {
     public BloqueoMesa BuscarBloqueoPorId(int bloqueoId);
 
-    public List<BloqueoMesa> ObtenerBloqueoPorMesaId(int mesaId);
+    public List<BloqueoMesa> ObtenerBloqueoPorMesaId();
 
     public BloqueoMesa CrearBloqueoMesa(BloqueoMesa bloqueo);
 

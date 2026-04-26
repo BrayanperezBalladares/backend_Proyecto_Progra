@@ -5,24 +5,19 @@ namespace ProyectoIProgra2.Data
 
     public class MyAppDbContext : DbContext
     {
-        public MyAppDbContext(DbContextOptionsBuilder options)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            options.UseInMemoryDatabase("MyAppDbContext");
+            optionsBuilder.UseInMemoryDatabase("MyAppDb");
         }
-        
+
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Mesa> Mesas { get; set; }
         public DbSet<Reserva> Reservas { get; set; }
         public DbSet<Zona> Zonas { get; set; }
         public DbSet<Turno> Turnos { get; set; }
-        public DbSet<EstadoDeReserva> EstadosReserva { get; set; }
+        public DbSet<EstadoDeReserva> EstadoDeReservas { get; set; }
         public DbSet<BloqueoMesa> BloqueosMesas { get; set; }
-        public DbSet<ListaDeEspera> ListasEspera { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-        }
+        public DbSet<ListaDeEspera> ListasDeEspera { get; set; }
+        
     }
 }

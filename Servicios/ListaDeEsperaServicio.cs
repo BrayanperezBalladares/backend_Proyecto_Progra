@@ -1,12 +1,22 @@
-﻿using ProyectoIProgra2.Entidades;
+﻿using ProyectoIProgra2.Data;
+using ProyectoIProgra2.Entidades;
 
 namespace ProyectoIProgra2.Servicios
 {
     public class ListaDeEsperaServicio : IListaDeEsperaServicio
     {
+        private readonly MyAppDbContext _MyAppDbContext;
+        public ListaDeEsperaServicio(MyAppDbContext myAppDbContext)
+        {
+            _MyAppDbContext = myAppDbContext;
+        }
         public ListaDeEspera ActualizarListaDeEspera(int listaId, ListaDeEspera lista)
         {
-            throw new NotImplementedException();
+            var result = _MyAppDbContext.ListasDeEspera.Find(listaId);
+            result.ListaDeEsperaId = lista.ListaDeEsperaId;
+            _MyAppDbContext.ListasDeEspera.Update(result);
+            _MyAppDbContext.SaveChanges();
+            return result;
         }
 
         public ListaDeEspera AsignarMesaDesdeLista(int listaId, int mesaId)
@@ -16,7 +26,8 @@ namespace ProyectoIProgra2.Servicios
 
         public ListaDeEspera BuscarPorId(int listaId)
         {
-            throw new NotImplementedException();
+            var result = _MyAppDbContext.ListasDeEspera.Find(listaId);
+            return result;
         }
 
         public ListaDeEspera CambiarEstadoLista(int listaId, int estadoId)
@@ -36,7 +47,9 @@ namespace ProyectoIProgra2.Servicios
 
         public void EliminarListaDeEspera(int listaId)
         {
-            throw new NotImplementedException();
+            var result = _MyAppDbContext.ListasDeEspera.Find(listaId);
+            _MyAppDbContext.ListasDeEspera.Remove(result);
+            _MyAppDbContext.SaveChanges();
         }
 
         public bool HayPersonasEnListaDeEspera(int turnoId)
@@ -46,7 +59,7 @@ namespace ProyectoIProgra2.Servicios
 
         public List<ListaDeEspera> ListarListaEspera()
         {
-            throw new NotImplementedException();
+            return _MyAppDbContext.ListasDeEspera.ToList();
         }
 
         public List<ListaDeEspera> ObtenerListaPorTurno(int turnoId)

@@ -1,27 +1,42 @@
-﻿using ProyectoIProgra2.Entidades;
+﻿using ProyectoIProgra2.Data;
+using ProyectoIProgra2.Entidades;
 
 namespace ProyectoIProgra2.Servicios
 {
     public class BloqueoMesaServicio : IBloqueoMesaServicio
     {
+        private readonly MyAppDbContext _MyAppDbContext;
+        public BloqueoMesaServicio(MyAppDbContext myAppDbContext)
+        {
+            _MyAppDbContext = myAppDbContext;
+        }
         public BloqueoMesa ActualizarBloqueoMesa(int bloqueoId, BloqueoMesa bloqueo)
         {
-            throw new NotImplementedException();
+            var result = _MyAppDbContext.BloqueosMesas.Find(bloqueoId);
+            result.BloqueoMesaId = bloqueo.BloqueoMesaId;
+            _MyAppDbContext.BloqueosMesas.Update(result);
+            _MyAppDbContext.SaveChanges();
+            return result;
         }
 
         public BloqueoMesa BuscarBloqueoPorId(int bloqueoId)
         {
-            throw new NotImplementedException();
+            var result = _MyAppDbContext.BloqueosMesas.Find(bloqueoId);
+            return result;
         }
 
         public BloqueoMesa CrearBloqueoMesa(BloqueoMesa bloqueo)
         {
-            throw new NotImplementedException();
+            _MyAppDbContext.BloqueosMesas.Add(bloqueo);
+            _MyAppDbContext.SaveChanges();
+            return bloqueo;
         }
 
         public void EliminarBloqueoMesa(int bloqueoId)
         {
-            throw new NotImplementedException();
+            var result = _MyAppDbContext.BloqueosMesas.Find(bloqueoId);
+            _MyAppDbContext.BloqueosMesas.Remove(result);
+            _MyAppDbContext.SaveChanges();
         }
 
         public bool EstaMesaBloqueada(int mesaId, DateTime inicio, DateTime fin)
@@ -34,9 +49,9 @@ namespace ProyectoIProgra2.Servicios
             throw new NotImplementedException();
         }
 
-        public List<BloqueoMesa> ObtenerBloqueoPorMesaId(int mesaId)
+        public List<BloqueoMesa> ObtenerBloqueoPorMesaId()
         {
-            throw new NotImplementedException();
+            return _MyAppDbContext.BloqueosMesas.ToList();
         }
     }
 }

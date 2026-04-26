@@ -1,12 +1,22 @@
-﻿using ProyectoIProgra2.Entidades;
+﻿using ProyectoIProgra2.Data;
+using ProyectoIProgra2.Entidades;
 
 namespace ProyectoIProgra2.Servicios
 {
     public class ReservaServicio : IReservaServicio
     {
+        private readonly MyAppDbContext _MyAppDbContext;
+        public ReservaServicio(MyAppDbContext myAppDbContext)
+        {
+            _MyAppDbContext = myAppDbContext;
+        }
         public Reserva ActualizarReserva(int reservaId, Reserva reserva)
         {
-            throw new NotImplementedException();
+            var result = _MyAppDbContext.Reservas.Find(reservaId);
+            result.ReservaId = reserva.ReservaId;
+            _MyAppDbContext.Reservas.Update(result);
+            _MyAppDbContext.SaveChanges();
+            return result;
         }
 
         public Reserva AsignarMesa(int reservaId, int mesaId)
@@ -16,7 +26,8 @@ namespace ProyectoIProgra2.Servicios
 
         public Reserva BuscarReservaPorId(int reservaId)
         {
-            throw new NotImplementedException();
+            var result = _MyAppDbContext.Reservas.Find(reservaId);
+            return result;
         }
 
         public Reserva CambiarEstadoReserva(int reservaId, int estadoId)
@@ -31,12 +42,16 @@ namespace ProyectoIProgra2.Servicios
 
         public Reserva CrearReserva(Reserva reserva)
         {
-            throw new NotImplementedException();
+            _MyAppDbContext.Reservas.Add(reserva);
+            _MyAppDbContext.SaveChanges();
+            return reserva;
         }
 
         public void EliminarReserva(int reservaId)
         {
-            throw new NotImplementedException();
+            var result = _MyAppDbContext.Reservas.Find(reservaId);
+            _MyAppDbContext.Reservas.Remove(result);
+            _MyAppDbContext.SaveChanges();
         }
 
         public bool ExisteInterferenciaDeHorario(int mesaId, DateTime inicio, DateTime fin)
@@ -51,7 +66,7 @@ namespace ProyectoIProgra2.Servicios
 
         public List<Reserva> ListarReservas()
         {
-            throw new NotImplementedException();
+            return _MyAppDbContext.Reservas.ToList();
         }
 
         public List<Reserva> ObtenerReservaPorClienteId(int clienteId)

@@ -1,32 +1,47 @@
-﻿using ProyectoIProgra2.Entidades;
+﻿using ProyectoIProgra2.Data;
+using ProyectoIProgra2.Entidades;
 
 namespace ProyectoIProgra2.Servicios
 {
     public class EstadoDeReservaServicio : IEstadoDeReservaServicio
     {
+        private readonly MyAppDbContext _MyAppDbContext;
+        public EstadoDeReservaServicio(MyAppDbContext myAppDbContext)
+        {
+            _MyAppDbContext = myAppDbContext;
+        }
         public EstadoDeReserva ActualizarEstadoDeReserva(int estadoId, EstadoDeReserva estado)
         {
-            throw new NotImplementedException();
+            var result = _MyAppDbContext.EstadoDeReservas.Find(estadoId);
+            result.EstadoDeReservaId = estado.EstadoDeReservaId;
+            _MyAppDbContext.EstadoDeReservas.Update(result);
+            _MyAppDbContext.SaveChanges();
+            return result;
         }
 
         public EstadoDeReserva BuscarEstadoDeReservaPorId(int estadoId)
         {
-            throw new NotImplementedException();
+            var result = _MyAppDbContext.EstadoDeReservas.Find(estadoId);
+            return result;
         }
 
         public EstadoDeReserva CrearEstadoDeReserva(EstadoDeReserva estado)
         {
-            throw new NotImplementedException();
+            _MyAppDbContext.EstadoDeReservas.Add(estado);
+            _MyAppDbContext.SaveChanges();
+            return estado;
         }
 
         public void EliminarEstadoDeReserva(int estadoId)
         {
-            throw new NotImplementedException();
+            var result = _MyAppDbContext.EstadoDeReservas.Find(estadoId);
+            _MyAppDbContext.EstadoDeReservas.Remove(result);
+            _MyAppDbContext.SaveChanges();
         }
 
         public List<EstadoDeReserva> ListarEstados()
         {
-            throw new NotImplementedException();
+            return _MyAppDbContext.EstadoDeReservas.ToList();
         }
     }
 }

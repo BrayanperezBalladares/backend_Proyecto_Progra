@@ -2,7 +2,7 @@
 {
     public class Zona
     {
-        public int Id { get; set; }
+        public int ZonaId { get; set; }
         public string Seccion { get; set; }
     }
 }

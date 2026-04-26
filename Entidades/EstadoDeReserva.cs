@@ -2,7 +2,7 @@
 {
     public class EstadoDeReserva
     {
-        public int Id { get; set; }
+        public int EstadoDeReservaId { get; set; }
         public string Estado { get; set; }
     }
 }
