@@ -9,6 +9,11 @@ namespace ProyectoIProgra2.Servicios
             throw new NotImplementedException();
         }
 
+        public EstadoDeReserva BuscarEstadoDeReservaPorId(int estadoId)
+        {
+            throw new NotImplementedException();
+        }
+
         public EstadoDeReserva CrearEstadoDeReserva(EstadoDeReserva estado)
         {
             throw new NotImplementedException();

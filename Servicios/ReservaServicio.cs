@@ -39,6 +39,16 @@ namespace ProyectoIProgra2.Servicios
             throw new NotImplementedException();
         }
 
+        public bool ExisteInterferenciaDeHorario(int mesaId, DateTime inicio, DateTime fin)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void LiberarMesa(int ReservaId)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Reserva> ListarReservas()
         {
             throw new NotImplementedException();
@@ -50,6 +60,11 @@ namespace ProyectoIProgra2.Servicios
         }
 
         public List<Reserva> ObtenerReservasPorFecha(DateTime fecha)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ValidarReserva(Reserva reserva)
         {
             throw new NotImplementedException();
         }

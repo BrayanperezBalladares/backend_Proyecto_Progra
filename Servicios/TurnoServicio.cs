@@ -24,6 +24,11 @@ namespace ProyectoIProgra2.Servicios
             throw new NotImplementedException();
         }
 
+        public bool EstaDentroDeTurno(DateTime inicio, DateTime fin)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool TurnoDisponible(DateTime fechaHora)
         {
             throw new NotImplementedException();
