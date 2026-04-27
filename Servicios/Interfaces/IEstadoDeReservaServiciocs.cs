@@ -6,7 +6,7 @@ public interface IEstadoDeReservaServicio
     public EstadoDeReserva BuscarEstadoDeReservaPorId(int estadoId);
     public EstadoDeReserva CrearEstadoDeReserva(EstadoDeReserva estado);
 
-    public EstadoDeReserva ActualizarEstadoDeReserva(int estadoId, EstadoDeReserva estado);
+  
 
     public void EliminarEstadoDeReserva(int estadoId);
 }

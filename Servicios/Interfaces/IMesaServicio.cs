@@ -10,7 +10,7 @@ public interface IMesaServicio
 
     public List<Mesa> ObtenerMesaPorCapacidad(int capacidad);
 
-    public bool ComprobarDisponibilidadMesa(int mesaId, DateTime inicio, DateTime fin);
+    
 
     public Mesa CrearMesa(Mesa mesa);
 
@@ -18,6 +18,5 @@ public interface IMesaServicio
 
     public Mesa AsignarReservaAMesa(int mesaId, int reservaId);
 
-    public void EliminarMesa(int mesaId);
     public List<Mesa> ObtenerMesasDisponibles(DateTime inicio, DateTime fin, int capacidad);
 }

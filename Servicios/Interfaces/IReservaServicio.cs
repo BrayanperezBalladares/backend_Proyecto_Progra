@@ -6,7 +6,7 @@ public interface IReservaServicio
 
     public Reserva BuscarReservaPorId(int reservaId);
 
-    public bool ComprobarDisponibilidadDeReservas(int mesaId, DateTime inicio, DateTime fin);
+    public bool ComprobarDisponibilidadDeMesa(int mesaId, DateTime inicio, DateTime fin);
 
     public List<Reserva> ObtenerReservasPorFecha(DateTime fecha);
 
