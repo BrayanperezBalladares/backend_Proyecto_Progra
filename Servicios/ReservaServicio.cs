@@ -5,18 +5,9 @@ namespace ProyectoIProgra2.Servicios
 {
     public class ReservaServicio : IReservaServicio
     {
-        private readonly MyAppDbContext _MyAppDbContext;
-        public ReservaServicio(MyAppDbContext myAppDbContext)
-        {
-            _MyAppDbContext = myAppDbContext;
-        }
         public Reserva ActualizarReserva(int reservaId, Reserva reserva)
         {
-            var result = _MyAppDbContext.Reservas.Find(reservaId);
-            result.ReservaId = reserva.ReservaId;
-            _MyAppDbContext.Reservas.Update(result);
-            _MyAppDbContext.SaveChanges();
-            return result;
+            throw new NotImplementedException();
         }
 
         public Reserva AsignarMesa(int reservaId, int mesaId)
@@ -26,8 +17,7 @@ namespace ProyectoIProgra2.Servicios
 
         public Reserva BuscarReservaPorId(int reservaId)
         {
-            var result = _MyAppDbContext.Reservas.Find(reservaId);
-            return result;
+            throw new NotImplementedException();
         }
 
         public Reserva CambiarEstadoReserva(int reservaId, int estadoId)
@@ -35,23 +25,19 @@ namespace ProyectoIProgra2.Servicios
             throw new NotImplementedException();
         }
 
-        public bool ComprobarDisponibilidadDeReservas(int mesaId, DateTime inicio, DateTime fin)
+        public bool ComprobarDisponibilidadDeMesa(int mesaId, DateTime inicio, DateTime fin)
         {
             throw new NotImplementedException();
         }
 
         public Reserva CrearReserva(Reserva reserva)
         {
-            _MyAppDbContext.Reservas.Add(reserva);
-            _MyAppDbContext.SaveChanges();
-            return reserva;
+            throw new NotImplementedException();
         }
 
         public void EliminarReserva(int reservaId)
         {
-            var result = _MyAppDbContext.Reservas.Find(reservaId);
-            _MyAppDbContext.Reservas.Remove(result);
-            _MyAppDbContext.SaveChanges();
+            throw new NotImplementedException();
         }
 
         public bool ExisteInterferenciaDeHorario(int mesaId, DateTime inicio, DateTime fin)
@@ -66,7 +52,7 @@ namespace ProyectoIProgra2.Servicios
 
         public List<Reserva> ListarReservas()
         {
-            return _MyAppDbContext.Reservas.ToList();
+            throw new NotImplementedException();
         }
 
         public List<Reserva> ObtenerReservaPorClienteId(int clienteId)

@@ -16,5 +16,5 @@ public interface IClienteServicio
 
     public void EliminarCliente(int clienteId);
 
-    public bool ExisteClientePorCedula(int cedula);
+  
 }

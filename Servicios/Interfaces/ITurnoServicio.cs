@@ -6,7 +6,7 @@ public interface ITurnoServicio
 
     public bool TurnoDisponible(DateTime fechaHora);
 
-    public bool ValidarHorarioReserva(DateTime inicio, DateTime fin);
+   
 
     public Turno CrearTurno(Turno turno);
 
