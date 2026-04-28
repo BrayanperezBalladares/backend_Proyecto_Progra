@@ -6,8 +6,6 @@ public interface IReservaServicio
 
     public Reserva BuscarReservaPorId(int reservaId);
 
-    public bool ComprobarDisponibilidadDeMesa(int mesaId, DateTime inicio, DateTime fin);
-
     public List<Reserva> ObtenerReservasPorFecha(DateTime fecha);
 
     public List<Reserva> ObtenerReservaPorClienteId(int clienteId);
@@ -19,10 +17,10 @@ public interface IReservaServicio
     public Reserva CambiarEstadoReserva(int reservaId, int estadoId);
 
     public Reserva AsignarMesa(int reservaId, int mesaId);
-
+    public Reserva CancelarReserva(int reservaId);
     public void EliminarReserva(int reservaId);
-
-    public bool ExisteInterferenciaDeHorario(int mesaId, DateTime inicio, DateTime fin);
+    public bool EstaDentroDeTurno(DateTime inicio, DateTime fin);
     public bool ValidarReserva(Reserva reserva);
-    void LiberarMesa(int ReservaId);
+
+    public void ProcesarListaDeEspera(int mesaId, DateTime inicio, DateTime fin);
 }
