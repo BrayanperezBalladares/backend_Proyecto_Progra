@@ -9,4 +9,5 @@ public interface ITurnoServicio
     public Turno CrearTurno(Turno turno);
 
     public bool EstaDentroDeTurno(DateTime inicio, DateTime fin);
+    public Turno ObtenerTurnoPorHorario(DateTime fechaHora);
 }
