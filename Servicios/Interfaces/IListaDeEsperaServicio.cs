@@ -17,7 +17,6 @@ public interface IListaDeEsperaServicio
 
     public void EliminarClienteEnListaDeEspera(int listaId);
 
-    public ListaDeEspera ObtenerSiguienteEnListaDeEspera(int turnoId);
 
     public Reserva ConvertirAReserva(int listaId, int mesaid);
 }
