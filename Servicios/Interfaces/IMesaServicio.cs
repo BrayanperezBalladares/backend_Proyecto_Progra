@@ -14,7 +14,7 @@ public interface IMesaServicio
 
     public Mesa CrearMesa(Mesa mesa);
 
-    public Mesa ActualizarMesa(int mesaId, Mesa mesa);
+  
 
     public Mesa AsignarReservaAMesa(int mesaId, int reservaId);
 
