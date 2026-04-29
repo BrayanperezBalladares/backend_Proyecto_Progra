@@ -13,7 +13,16 @@ namespace ProyectoIProgra2.Servicios
 
         public Zona ActualizarZona(int zonaId, Zona zona)
         {
-            throw new NotImplementedException();
+            var result = _MyAppDbContext.Zonas.Find(zonaId);
+
+            if (result == null)
+                throw new Exception("Zona no encontrada");
+
+            result.ZonaId = zona.ZonaId;
+            _MyAppDbContext.Zonas.Update(result);
+            _MyAppDbContext.SaveChanges();
+            return result;
+
         }
 
         public Zona BuscarZonaPorId(int zonaId)

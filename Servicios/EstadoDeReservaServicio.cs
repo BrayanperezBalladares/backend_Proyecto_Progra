@@ -1,6 +1,5 @@
 ﻿using ProyectoIProgra2.Data;
 using ProyectoIProgra2.Entidades;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ProyectoIProgra2.Servicios
 {

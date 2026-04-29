@@ -17,7 +17,7 @@ namespace ProyectoIProgra2.Servicios
                 throw new Exception("Bloqueo no encontrado");
 
             if (bloqueo.HoraInicio >= bloqueo.HoraFin)
-                throw new Exception("HoraFin debe ser posterior a HoraInicio");
+                throw new Exception("HoraFin debe ser despues a la de HoraInicio");
 
             result.MesaId = bloqueo.MesaId;
             result.HoraInicio = bloqueo.HoraInicio;
