@@ -11,12 +11,8 @@ public interface IListaDeEsperaServicio
     public ListaDeEspera CrearListaDeEspera(ListaDeEspera lista);
 
     public ListaDeEspera ActualizarListaDeEspera(int listaId, ListaDeEspera lista);
-
-    public ListaDeEspera AsignarMesaDesdeLista(int listaId, int mesaId);
-
-
     public void EliminarClienteEnListaDeEspera(int listaId);
-
-
     public Reserva ConvertirAReserva(int listaId, int mesaid);
+    public ListaDeEspera ObtenerSiguienteEnEspera(int turnoId);
+    public bool HayPersonasEnEspera(int turnoId);
 }

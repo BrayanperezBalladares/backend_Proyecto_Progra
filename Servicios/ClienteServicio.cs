@@ -13,20 +13,36 @@ namespace ProyectoIProgra2.Servicios
         public Cliente ActualizarCliente(int clienteId, Cliente cliente)
         {
             var result = _MyAppDbContext.Clientes.Find(clienteId);
-            result.ClienteId = cliente.ClienteId;
-            _MyAppDbContext.Clientes.Update(result);
+            if (result == null)
+                throw new Exception("No se encuentra al cliente");
+
+            if (result.Ced != cliente.Ced && ExisteClientePorCedula(cliente.Ced))
+                throw new Exception("Ya existe otro cliente con esa cédula");
+
+            result.Ced = cliente.Ced;
+            result.Nombre = cliente.Nombre;
+            result.Apellidos = cliente.Apellidos;
+            result.Tel = cliente.Tel;
+            result.Email = cliente.Email;
+            _MyAppDbContext.Update(result);
             _MyAppDbContext.SaveChanges();
             return result;
         }
 
         public Cliente BuscarClientePorCedula(int cedula)
         {
-            throw new NotImplementedException();
+            var result = _MyAppDbContext.Clientes
+               .FirstOrDefault(c => c.Ced == cedula);
+            if (result == null)
+                throw new Exception("No se encuentra al cliente");
+            return result;
         }
 
         public Cliente BuscarClientePorId(int clienteId)
         {
             var result = _MyAppDbContext.Clientes.Find(clienteId);
+            if (result == null)
+                throw new Exception("No se encuentra al cliente");
             return result;
         }
 
@@ -40,13 +56,23 @@ namespace ProyectoIProgra2.Servicios
         public void EliminarCliente(int clienteId)
         {
             var result = _MyAppDbContext.Clientes.Find(clienteId);
+            if (result == null)
+                throw new Exception("No se encuentra al cliente");
+
+            bool tieneReservasActivas = _MyAppDbContext.Reservas
+                .Any(r => r.ClienteId == clienteId &&
+                          r.EstadoDeReservaId == 1);
+
+            if (tieneReservasActivas)
+                throw new Exception("No se puede eliminar un cliente con reservas activas");
             _MyAppDbContext.Clientes.Remove(result);
             _MyAppDbContext.SaveChanges();
         }
 
         public bool ExisteClientePorCedula(int cedula)
         {
-            throw new NotImplementedException();
+            return _MyAppDbContext.Clientes
+                .Any(c => c.Ced == cedula);
         }
 
         public List<Cliente> ListarClientes()
@@ -56,7 +82,9 @@ namespace ProyectoIProgra2.Servicios
 
         public List<Reserva> ObtenerReservasDelCliente(int clienteId)
         {
-            throw new NotImplementedException();
+            return _MyAppDbContext.Reservas
+        .Where(r => r.ClienteId == clienteId)
+        .ToList();
         }
     }
 }

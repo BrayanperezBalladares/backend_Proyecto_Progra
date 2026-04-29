@@ -3,9 +3,7 @@
 public interface IEstadoDeReservaServicio
 {
     public List<EstadoDeReserva> ListarEstados();
-    public EstadoDeReserva BuscarEstadoDeReservaPorMesaId(int mesaId);
-    
+    public EstadoDeReserva BuscarEstadoPorId(int estadoId);
 
-
-  
+    public EstadoDeReserva BuscarEstadoDeReservaPorNombreEstado(string estado);
 }

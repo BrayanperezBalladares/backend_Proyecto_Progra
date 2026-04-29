@@ -10,41 +10,42 @@ namespace ProyectoIProgra2.Servicios
         {
             _MyAppDbContext = myAppDbContext;
         }
+
         public Zona ActualizarZona(int zonaId, Zona zona)
         {
             var result = _MyAppDbContext.Zonas.Find(zonaId);
+
+            if (result == null)
+                throw new Exception("Zona no encontrada");
+
             result.ZonaId = zona.ZonaId;
             _MyAppDbContext.Zonas.Update(result);
             _MyAppDbContext.SaveChanges();
             return result;
+
         }
 
         public Zona BuscarZonaPorId(int zonaId)
         {
-            var result = _MyAppDbContext.Zonas.Find(zonaId);
-            return result;
+            throw new NotImplementedException();
         }
 
         public Zona CrearZona(Zona zona)
         {
-            _MyAppDbContext.Zonas.Add(zona);
-            _MyAppDbContext.SaveChanges();
-            return zona;
+            throw new NotImplementedException();
         }
 
         public void EliminarZona(int zonaId)
         {
-            var result = _MyAppDbContext.Zonas.Find(zonaId);
-            _MyAppDbContext.Zonas.Remove(result);
-            _MyAppDbContext.SaveChanges();
+            throw new NotImplementedException();
         }
 
         public List<Zona> ListarZonas()
         {
-            return _MyAppDbContext.Zonas.ToList();
+            throw new NotImplementedException();
         }
 
-        public List<Mesa> ObtenerTodasLasMesasDeUnaZona(int zonaId)
+        public List<Mesa> ObtenerMesasDeUnaZona(int zonaId)
         {
             throw new NotImplementedException();
         }

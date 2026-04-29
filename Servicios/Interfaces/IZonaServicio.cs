@@ -6,7 +6,7 @@ public interface IZonaServicio
 
     public Zona BuscarZonaPorId(int zonaId);
 
-    public List<Mesa> ObtenerTodasLasMesasDeUnaZona(int zonaId);
+    public List<Mesa> ObtenerMesasDeUnaZona(int zonaId);
 
     public Zona CrearZona(Zona zona);
 

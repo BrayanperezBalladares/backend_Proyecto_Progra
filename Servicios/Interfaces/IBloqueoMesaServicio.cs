@@ -4,14 +4,14 @@ public interface IBloqueoMesaServicio
 {
     public BloqueoMesa BuscarBloqueoPorId(int bloqueoId);
 
-    public List<BloqueoMesa> ObtenerBloqueoPorMesaId();
+    public List<BloqueoMesa> ObtenerBloqueosPorMesaId(int mesaId);
 
     public BloqueoMesa CrearBloqueoMesa(BloqueoMesa bloqueo);
 
     public BloqueoMesa ActualizarBloqueoMesa(int bloqueoId, BloqueoMesa bloqueo);
 
     public void EliminarBloqueoMesa(int bloqueoId);
-    public BloqueoMesa DesbloquearMesa(int mesaId);
-    public bool EstaMesaBloqueada(int mesaId, DateTime inicio, DateTime fin);
     public bool ExisteInterferenciaBloqueoMesa(int mesaId, DateTime inicio, DateTime fin);
+    public BloqueoMesa DesbloquearMesa(int mesaId);
+    public List<BloqueoMesa> BloquearZona(int zonaId, DateTime inicio, DateTime fin, string motivo);
 }
