@@ -10,11 +10,6 @@ namespace ProyectoIProgra2.Servicios
             throw new NotImplementedException();
         }
 
-        public ListaDeEspera AsignarMesaDesdeLista(int listaId, int mesaId)
-        {
-            throw new NotImplementedException();
-        }
-
         public ListaDeEspera BuscarPorId(int listaId)
         {
             throw new NotImplementedException();
@@ -35,6 +30,11 @@ namespace ProyectoIProgra2.Servicios
             throw new NotImplementedException();
         }
 
+        public bool HayPersonasEnEspera(int turnoId)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<ListaDeEspera> ListarListaEspera()
         {
             throw new NotImplementedException();
@@ -45,7 +45,7 @@ namespace ProyectoIProgra2.Servicios
             throw new NotImplementedException();
         }
 
-        public ListaDeEspera ObtenerSiguienteEnListaDeEspera(int turnoId)
+        public ListaDeEspera ObtenerSiguienteEnEspera(int turnoId)
         {
             throw new NotImplementedException();
         }

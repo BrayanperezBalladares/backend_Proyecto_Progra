@@ -21,6 +21,6 @@ public interface IReservaServicio
     public void EliminarReserva(int reservaId);
     public bool EstaDentroDeTurno(DateTime inicio, DateTime fin);
     public bool ValidarReserva(Reserva reserva);
-
+    public bool ComprobarDisponibilidadDeReservas(int mesaId, DateTime inicio, DateTime fin);
     public void ProcesarListaDeEspera(int mesaId, DateTime inicio, DateTime fin);
 }
