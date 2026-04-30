@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ProyectoIProgra2.Data;
+﻿using ProyectoIProgra2.Data;
 using ProyectoIProgra2.Entidades;
 
 namespace ProyectoIProgra2.Servicios
@@ -202,7 +201,7 @@ namespace ProyectoIProgra2.Servicios
             TimeSpan horaInicio = inicio.TimeOfDay;
             TimeSpan horaFin = fin.TimeOfDay;
             return _MyAppDbContext.Turnos.Any(t =>
-        t.HorarioIncio <= inicio &&
+        t.HorarioInicio <= inicio &&
         t.HorarioFin >= fin
     );
         }
