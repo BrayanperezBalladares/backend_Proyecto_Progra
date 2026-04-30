@@ -5,6 +5,7 @@ namespace ProyectoIProgra2.Servicios
 {
     public class ListaDeEsperaServicio : IListaDeEsperaServicio
     {
+
         public ListaDeEspera ActualizarListaDeEspera(int listaId, ListaDeEspera lista)
         {
             throw new NotImplementedException();

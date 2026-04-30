@@ -53,8 +53,8 @@ namespace ProyectoIProgra2.Data
 
             // Turnos del restaurante
             modelBuilder.Entity<Turno>().HasData(
-                new Turno { TurnoId = 1, HorarioIncio = new DateTime(2025, 1, 1, 12, 0, 0), HorarioFin = new DateTime(2025, 1, 1, 15, 0, 0) },
-                new Turno { TurnoId = 2, HorarioIncio = new DateTime(2025, 1, 1, 18, 0, 0), HorarioFin = new DateTime(2025, 1, 1, 22, 0, 0) }
+                new Turno { TurnoId = 1, HorarioInicio = new DateTime(2025, 1, 1, 12, 0, 0), HorarioFin = new DateTime(2025, 1, 1, 15, 0, 0) },
+                new Turno { TurnoId = 2, HorarioInicio = new DateTime(2025, 1, 1, 18, 0, 0), HorarioFin = new DateTime(2025, 1, 1, 22, 0, 0) }
             );
 
             modelBuilder.Entity<Reserva>().HasData(
