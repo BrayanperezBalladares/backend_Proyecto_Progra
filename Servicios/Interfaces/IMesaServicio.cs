@@ -6,11 +6,11 @@ public interface IMesaServicio
     public Mesa BuscarMesaPorId(int mesaId);
     public Mesa BuscarMesaPorNumero(int numero);
 
-    public List<Mesa> ObtenerMesaPorZona(int zonaId);
+    public List<Mesa> ObtenerMesasPorZona(int zonaId);
 
-    public List<Mesa> ObtenerMesaPorCapacidad(int capacidad);
+    public List<Mesa> ObtenerMesasPorCapacidad(int capacidad);
 
     public Mesa CrearMesa(Mesa mesa);
-    bool ComprobarDisponibilidadMesa(int mesaId, DateTime inicio, DateTime fin);
+    public Mesa ComprobarDisponibilidadMesa(int mesaId, DateTime inicio, DateTime fin);
     public List<Mesa> ObtenerMesasDisponibles(DateTime inicio, DateTime fin, int capacidad);
 }

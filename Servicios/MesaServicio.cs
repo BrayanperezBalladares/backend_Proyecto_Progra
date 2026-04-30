@@ -74,14 +74,14 @@ namespace ProyectoIProgra2.Servicios
             return _MyAppDbContext.Mesas.ToList();
         }
 
-        public List<Mesa> ObtenerMesaPorCapacidad(int capacidad)
+        public List<Mesa> ObtenerMesasPorCapacidad(int capacidad)
         {
             return _MyAppDbContext.Mesas
-                 .Where(m => m.Capacidad >= capacidad)
-                 .ToList();
+                .Where(m => m.Capacidad >= capacidad)
+                .ToList();
         }
 
-        public List<Mesa> ObtenerMesaPorZona(int zonaId)
+        public List<Mesa> ObtenerMesasPorZona(int zonaId)
         {
             var zona = _MyAppDbContext.Zonas.Find(zonaId);
 

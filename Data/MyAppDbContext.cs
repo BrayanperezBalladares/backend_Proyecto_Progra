@@ -30,10 +30,10 @@ namespace ProyectoIProgra2.Data
 
             // Mesas del restaurante
             modelBuilder.Entity<Mesa>().HasData(
-                new Mesa { MesaId = 1, NumMesa = 1, Capacidad = 4, ZonaId = 1 },
-                new Mesa { MesaId = 2, NumMesa = 2, Capacidad = 2, ZonaId = 1 },
-                new Mesa { MesaId = 3, NumMesa = 3, Capacidad = 6, ZonaId = 2 },
-                new Mesa { MesaId = 4, NumMesa = 4, Capacidad = 4, ZonaId = 3 }
+                new Mesa { MesaId = 1, Capacidad = 4, ZonaId = 1 },
+                new Mesa { MesaId = 2, Capacidad = 2, ZonaId = 1 },
+                new Mesa { MesaId = 3, Capacidad = 6, ZonaId = 2 },
+                new Mesa { MesaId = 4, Capacidad = 4, ZonaId = 3 }
             );
 
             // Clientes de ejemplo
@@ -53,8 +53,9 @@ namespace ProyectoIProgra2.Data
 
             // Turnos del restaurante
             modelBuilder.Entity<Turno>().HasData(
-                new Turno { TurnoId = 1, HorarioInicio = new DateTime(2025, 1, 1, 12, 0, 0), HorarioFin = new DateTime(2025, 1, 1, 15, 0, 0) },
-                new Turno { TurnoId = 2, HorarioInicio = new DateTime(2025, 1, 1, 18, 0, 0), HorarioFin = new DateTime(2025, 1, 1, 22, 0, 0) }
+
+                new Turno { TurnoId = 1, HoraInicio = 12, HoraFin = 15 },
+                new Turno { TurnoId = 2, HoraInicio = 18, HoraFin = 22 }
             );
 
             modelBuilder.Entity<Reserva>().HasData(

@@ -8,10 +8,10 @@ public interface IBloqueoMesaServicio
 
     public BloqueoMesa CrearBloqueoMesa(BloqueoMesa bloqueo);
 
-    public BloqueoMesa ActualizarBloqueoMesa(int bloqueoId, BloqueoMesa bloqueo);
+    public BloqueoMesa ActualizarBloqueoMesa(int bloqueoId, BloqueoMesa bloqueo); 
 
     public void EliminarBloqueoMesa(int bloqueoId);
     public bool ExisteInterferenciaBloqueoMesa(int mesaId, DateTime inicio, DateTime fin);
     public BloqueoMesa DesbloquearMesa(int mesaId);
-    public List<BloqueoMesa> BloquearZona(int zonaId, DateTime inicio, DateTime fin, string motivo);
+    public List<BloqueoMesa> ActualizarZona(int zonaId, DateTime inicio, DateTime fin, bool activa); //se va llamar "actualizar zona" y va a recibir un booleano para la nueva entidad "Activa"
 }
