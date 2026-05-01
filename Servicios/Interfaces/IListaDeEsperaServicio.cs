@@ -13,6 +13,6 @@ public interface IListaDeEsperaServicio
     public ListaDeEspera ActualizarListaDeEspera(int listaId, ListaDeEspera lista);
     public void EliminarClienteEnListaDeEspera(int listaId);
     public Reserva ConvertirAReserva(int listaId, int mesaId);
-    public ListaDeEspera ObtenerSiguienteEnEspera(int turnoId);
+    public ListaDeEspera ObtenerSiguienteEnEspera(int turnoId, int capacidadMesa);
     public bool HayPersonasEnEspera(int turnoId);
 }

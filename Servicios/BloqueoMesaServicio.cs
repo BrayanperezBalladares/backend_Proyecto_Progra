@@ -10,6 +10,7 @@ namespace ProyectoIProgra2.Servicios
         {
             _MyAppDbContext = myAppDbContext;
         }
+
         public BloqueoMesa ActualizarBloqueoMesa(int bloqueoId, BloqueoMesa bloqueo)
         {
             var result = _MyAppDbContext.BloqueosMesas.Find(bloqueoId);
@@ -28,60 +29,73 @@ namespace ProyectoIProgra2.Servicios
             _MyAppDbContext.Update(result);
             _MyAppDbContext.SaveChanges();
             return result;
+
         }
 
-        public List<BloqueoMesa> BloquearZona(int zonaId, DateTime inicio, DateTime fin, string motivo)
+        public List<BloqueoMesa> ActualizarZona(int zonaId, DateTime inicio, DateTime fin, bool activa)
         {
-            if (inicio >= fin)
-                throw new Exception("HoraFin debe ser posterior a HoraInicio");
-
+            var zona = _MyAppDbContext.Zonas.Find(zonaId);
+            if (zona == null)
+                throw new Exception("Zona no encontrada");
             var mesas = _MyAppDbContext.Mesas
-                .Where(m => m.ZonaId == zonaId)
-                .ToList();
+                .Where(m => m.ZonaId == zonaId).ToList();
 
             if (!mesas.Any())
                 throw new Exception("No se encontraron mesas en esa zona");
-
-            var bloqueos = new List<BloqueoMesa>();
-
-            // Foreach exterior — recorre cada mesa de la zona
-            foreach (var mesa in mesas)
+            if (activa)
             {
+            var bloqueos = new List<BloqueoMesa>();
+                mesas.ForEach(mesa =>
+                {
                 var reservasAfectadas = _MyAppDbContext.Reservas
-                    .Where(r =>
-                        r.MesaId == mesa.MesaId &&
-                        r.EstadoDeReservaId == 1 &&
-                        r.HoraInicio < fin &&
-                        r.HoraFin > inicio)
+                   .Where(r =>
+                    r.MesaId == mesa.MesaId &&
+                    r.EstadoDeReservaId == 1 &&
+                    r.HoraInicio < fin &&
+                    r.HoraFin > inicio)
                     .ToList();
 
-                // Foreach interior — cancela cada reserva de esa mesa
-                foreach (var reserva in reservasAfectadas)
-                {
-                    reserva.EstadoDeReservaId = 2;
-                    _MyAppDbContext.Update(reserva);
-                }
+                    reservasAfectadas.ForEach(r =>
+                    {
+                        r.EstadoDeReservaId = 2; 
+                        _MyAppDbContext.Update(r);
+                    });
+                    var bloqueo = new BloqueoMesa
+                    {
+                        MesaId = mesa.MesaId,
+                        Fecha = inicio.Date,
+                        HoraInicio = inicio,
+                        HoraFin = fin,
+                        Detalle = "Zona bloqueada"
+                    };
 
-                var bloqueo = new BloqueoMesa
-                {
-                    MesaId = mesa.MesaId,
-                    Fecha = inicio.Date,
-                    HoraInicio = inicio,
-                    HoraFin = fin,
-                    Detalle = motivo
-                };
+                    _MyAppDbContext.BloqueosMesas.Add(bloqueo);
+                    bloqueos.Add(bloqueo);
+                });
 
-                _MyAppDbContext.BloqueosMesas.Add(bloqueo);
-                bloqueos.Add(bloqueo);
+                _MyAppDbContext.SaveChanges();
+                return bloqueos;
             }
+            else
+            {
+                var bloqueos = _MyAppDbContext.BloqueosMesas
+                    .Where(b =>
+                        b.HoraInicio == inicio &&
+                        b.HoraFin == fin &&
+                        mesas.Any(m => m.MesaId == b.MesaId))
+                    .ToList();
 
-            _MyAppDbContext.SaveChanges();
-            return bloqueos;
+                _MyAppDbContext.BloqueosMesas.RemoveRange(bloqueos);
+                _MyAppDbContext.SaveChanges();
+
+                return bloqueos;
+            }
         }
 
         public BloqueoMesa BuscarBloqueoPorId(int bloqueoId)
         {
             var result = _MyAppDbContext.BloqueosMesas.Find(bloqueoId);
+
             if (result == null)
                 throw new Exception("Bloqueo no encontrado");
             return result;
@@ -100,7 +114,7 @@ namespace ProyectoIProgra2.Servicios
             var reservasAfectadas = _MyAppDbContext.Reservas
                .Where(r =>
                    r.MesaId == bloqueo.MesaId &&
-                   r.EstadoDeReservaId == 1 && // solo Activas
+                   r.EstadoDeReservaId == 1 && 
                    r.HoraInicio < bloqueo.HoraFin &&
                    r.HoraFin > bloqueo.HoraInicio)
                .ToList();
@@ -115,19 +129,20 @@ namespace ProyectoIProgra2.Servicios
             _MyAppDbContext.BloqueosMesas.Add(bloqueo);
             _MyAppDbContext.SaveChanges();
             return bloqueo;
+
         }
 
         public BloqueoMesa DesbloquearMesa(int mesaId)
         {
             var bloqueos = _MyAppDbContext.BloqueosMesas
-       .Where(b => b.MesaId == mesaId)
-       .ToList();
+                .Where(b => b.MesaId == mesaId)
+                .ToList();
             if (!bloqueos.Any())
-                throw new Exception("No hay bloqueos activos para esa mesa");
+            throw new Exception("No hay bloqueos activos para esa mesa");
 
             _MyAppDbContext.BloqueosMesas.RemoveRange(bloqueos);
             _MyAppDbContext.SaveChanges();
-             return bloqueos.First();
+            return bloqueos.First();
 
         }
 
@@ -138,8 +153,8 @@ namespace ProyectoIProgra2.Servicios
                 throw new Exception("Bloqueo no encontrado");
             _MyAppDbContext.BloqueosMesas.Remove(result);
             _MyAppDbContext.SaveChanges();
-        }
 
+        }
 
         public bool ExisteInterferenciaBloqueoMesa(int mesaId, DateTime inicio, DateTime fin)
         {
@@ -153,8 +168,8 @@ namespace ProyectoIProgra2.Servicios
         public List<BloqueoMesa> ObtenerBloqueosPorMesaId(int mesaId)
         {
             return _MyAppDbContext.BloqueosMesas
-               .Where(b => b.MesaId == mesaId)
-               .ToList();
+                .Where(b => b.MesaId == mesaId)
+                .ToList();
         }
     }
 }

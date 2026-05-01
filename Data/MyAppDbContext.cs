@@ -45,17 +45,17 @@ namespace ProyectoIProgra2.Data
 
             // Estados posibles de una reserva
             modelBuilder.Entity<EstadoDeReserva>().HasData(
-                new EstadoDeReserva { EstadoDeReservaId = 1, Estado = "Pendiente" },
-                new EstadoDeReserva { EstadoDeReservaId = 2, Estado = "Confirmada" },
-                new EstadoDeReserva { EstadoDeReservaId = 3, Estado = "Cancelada" },
-                new EstadoDeReserva { EstadoDeReservaId = 4, Estado = "Completada" }
+                new EstadoDeReserva { EstadoDeReservaId = 1, Estado = "Activa" },
+                new EstadoDeReserva { EstadoDeReservaId = 2, Estado = "Cancelada" },
+                new EstadoDeReserva { EstadoDeReservaId = 3, Estado = "Atendida" }
             );
 
             // Turnos del restaurante
             modelBuilder.Entity<Turno>().HasData(
 
-                new Turno { TurnoId = 1, HoraInicio = 12, HoraFin = 15 },
-                new Turno { TurnoId = 2, HoraInicio = 18, HoraFin = 22 }
+                new Turno { TurnoId = 1, HoraInicio = 8, HoraFin = 11 },//Desayuno
+                new Turno { TurnoId = 2, HoraInicio = 12, HoraFin = 15 },//Almuerzo
+                new Turno { TurnoId = 3, HoraInicio = 18, HoraFin = 22 }//Cena
             );
 
             modelBuilder.Entity<Reserva>().HasData(

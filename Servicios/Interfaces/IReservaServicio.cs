@@ -18,5 +18,5 @@ public interface IReservaServicio
     public void ProcesarListaDeEspera(int mesaId, DateTime inicio, DateTime fin);
     public List<Reserva> BuscarReservasPorEstadoId(int estado);
 
-    //buscar reserva x estado en reserva
+    
 }

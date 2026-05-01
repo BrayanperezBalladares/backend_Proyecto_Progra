@@ -10,6 +10,7 @@ namespace ProyectoIProgra2.Servicios
         {
             _MyAppDbContext = myAppDbContext;
         }
+
         public ListaDeEspera ActualizarListaDeEspera(int listaId, ListaDeEspera lista)
         {
             var result = _MyAppDbContext.ListasDeEspera.Find(listaId);
@@ -25,6 +26,7 @@ namespace ProyectoIProgra2.Servicios
             _MyAppDbContext.Update(result);
             _MyAppDbContext.SaveChanges();
             return result;
+
         }
 
         public ListaDeEspera BuscarPorId(int listaId)
@@ -35,6 +37,7 @@ namespace ProyectoIProgra2.Servicios
                 throw new Exception("Entrada de lista de espera no encontrada");
 
             return result;
+
         }
 
         public Reserva ConvertirAReserva(int listaId, int mesaId)
@@ -43,20 +46,23 @@ namespace ProyectoIProgra2.Servicios
             if (lista == null)
                 throw new Exception("Entrada de lista de espera no encontrada");
 
+             var turno = _MyAppDbContext.Turnos.Find(lista.TurnoId);
+            if (turno == null)
+                throw new Exception("El turno no existe");
+
+            if (!HayPersonasEnEspera(lista.TurnoId))
+                throw new Exception("No hay personas en espera para ese turno");
+
             var mesa = _MyAppDbContext.Mesas.Find(mesaId);
             if (mesa == null)
                 throw new Exception("La mesa no existe");
 
-            if (lista.CantidadPersonas > mesa.Capacidad)
-                throw new Exception("La mesa no tiene capacidad suficiente");
+            var siguiente = ObtenerSiguienteEnEspera(lista.TurnoId, mesa.Capacidad);
+            if (siguiente.ListaDeEsperaId != listaId)
+                throw new Exception("No es el siguiente en la lista que cumple con la capacidad de esa mesa");
 
-            var turno = _MyAppDbContext.Turnos.Find(lista.TurnoId);
-            if (turno == null)
-                throw new Exception("El turno no existe");
-
-            // Usar directamente las horas del turno
-            DateTime horaInicio = turno.HorarioInicio; 
-            DateTime horaFin = turno.HorarioFin;    
+            DateTime horaInicio = DateTime.Today.AddHours(turno.HoraInicio);
+            DateTime horaFin = DateTime.Today.AddHours(turno.HoraFin);
 
             bool mesaDisponible = !_MyAppDbContext.Reservas.Any(r =>
                 r.MesaId == mesaId &&
@@ -76,21 +82,38 @@ namespace ProyectoIProgra2.Servicios
                 HoraInicio = horaInicio,
                 HoraFin = horaFin,
                 CantidaPersonas = lista.CantidadPersonas,
-                EstadoDeReservaId = 1
+                EstadoDeReservaId = 1,
+                TurnoId = lista.TurnoId
             };
 
             _MyAppDbContext.Reservas.Add(nuevaReserva);
-            _MyAppDbContext.ListasDeEspera.Remove(lista); 
+
+            _MyAppDbContext.ListasDeEspera.Remove(lista);
             _MyAppDbContext.SaveChanges();
 
             return nuevaReserva;
+
 
         }
 
         public ListaDeEspera CrearListaDeEspera(ListaDeEspera lista)
         {
+            var cliente = _MyAppDbContext.Clientes.Find(lista.ClienteId);
+            if (cliente == null)
+                throw new Exception("El cliente no existe");
+
+            var turno = _MyAppDbContext.Turnos.Find(lista.TurnoId);
+            if (turno == null)
+                throw new Exception("El turno no existe");
+
+            if (lista.CantidadPersonas <= 0)
+                throw new Exception("La cantidad de personas debe ser mayor a 0");
+
+            lista.HoraSolicitud = DateTime.Now;
+
             _MyAppDbContext.ListasDeEspera.Add(lista);
             _MyAppDbContext.SaveChanges();
+
             return lista;
         }
 
@@ -101,27 +124,42 @@ namespace ProyectoIProgra2.Servicios
                 throw new Exception("Entrada en lista de espera no encontrada");
             _MyAppDbContext.ListasDeEspera.Remove(result);
             _MyAppDbContext.SaveChanges();
+
         }
 
         public bool HayPersonasEnEspera(int turnoId)
         {
             return _MyAppDbContext.ListasDeEspera
-                .Any(l => l.TurnoId == turnoId);
+                 .Any(l => l.TurnoId == turnoId);
         }
 
         public List<ListaDeEspera> ListarListaEspera()
         {
-            throw new NotImplementedException();
+            return _MyAppDbContext.ListasDeEspera
+               .OrderBy(l => l.HoraSolicitud)
+               .ToList();
         }
 
         public List<ListaDeEspera> ObtenerListaPorTurno(int turnoId)
         {
-            throw new NotImplementedException();
+            return _MyAppDbContext.ListasDeEspera
+                .Where(l => l.TurnoId == turnoId)
+                .OrderBy(l => l.HoraSolicitud)
+                .ToList(); ;
         }
 
-        public ListaDeEspera ObtenerSiguienteEnEspera(int turnoId)
+        public ListaDeEspera ObtenerSiguienteEnEspera(int turnoId, int capacidadMesa)
         {
-            throw new NotImplementedException();
+        var result = _MyAppDbContext.ListasDeEspera
+        .Where(P => P.TurnoId == turnoId &&
+         P.CantidadPersonas <= capacidadMesa)
+        .OrderBy(P => P.HoraSolicitud)
+        .FirstOrDefault();
+
+        if (result == null)
+        throw new Exception("No cumplen con la capacidad de la mesa");
+
+            return result;
         }
     }
 }
