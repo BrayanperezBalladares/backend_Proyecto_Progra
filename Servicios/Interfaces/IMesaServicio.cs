@@ -4,7 +4,7 @@ public interface IMesaServicio
 {
     public List<Mesa> ListarMesas();
     public Mesa BuscarMesaPorId(int mesaId);
-    public Mesa BuscarMesaPorNumero(int numero);
+    
 
     public List<Mesa> ObtenerMesasPorZona(int zonaId);
 

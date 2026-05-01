@@ -5,12 +5,12 @@ namespace ProyectoIProgra2.Servicios
 {
     public class ZonaServicio : IZonaServicio
     {
+
         private readonly MyAppDbContext _MyAppDbContext;
         public ZonaServicio(MyAppDbContext myAppDbContext)
         {
             _MyAppDbContext = myAppDbContext;
         }
-
         public Zona ActualizarZona(int zonaId, Zona zona)
         {
             var result = _MyAppDbContext.Zonas.Find(zonaId);
@@ -35,6 +35,7 @@ namespace ProyectoIProgra2.Servicios
                 throw new Exception("Zona no encontrada");
 
             return result;
+
         }
 
         public Zona CrearZona(Zona zona)
@@ -42,7 +43,6 @@ namespace ProyectoIProgra2.Servicios
             _MyAppDbContext.Zonas.Add(zona);
             _MyAppDbContext.SaveChanges();
             return zona;
-
         }
 
         public void EliminarZona(int zonaId)
@@ -63,8 +63,6 @@ namespace ProyectoIProgra2.Servicios
 
             _MyAppDbContext.Zonas.Remove(result);
             _MyAppDbContext.SaveChanges();
-
-
         }
 
         public List<Zona> ListarZonas()
@@ -81,6 +79,7 @@ namespace ProyectoIProgra2.Servicios
             return _MyAppDbContext.Mesas
                 .Where(m => m.ZonaId == zonaId)
                 .ToList();
+
         }
     }
 }
