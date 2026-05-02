@@ -1,4 +1,5 @@
 ﻿using ProyectoIProgra2.Data;
+using ProyectoIProgra2.DTOs;
 using ProyectoIProgra2.Entidades;
 
 namespace ProyectoIProgra2.Servicios
@@ -11,54 +12,94 @@ namespace ProyectoIProgra2.Servicios
             _MyAppDbContext = myAppDbContext;
         }
 
-        public Cliente ActualizarCliente(int clienteId, Cliente cliente)
+        public ClienteDto ActualizarCliente(int clienteId, ClienteDto dto)
         {
             var result = _MyAppDbContext.Clientes.Find(clienteId);
+
             if (result == null)
+
                 throw new Exception("No se encuentra al cliente");
 
-            if (result.Ced != cliente.Ced && ExisteClientePorCedula(cliente.Ced))
+            if (result.Ced != dto.Ced && ExisteClientePorCedula(dto.Ced))
                 throw new Exception("Ya existe otro cliente con esa cédula");
 
-            result.Ced = cliente.Ced;
-            result.Nombre = cliente.Nombre;
-            result.Apellidos = cliente.Apellidos;
-            result.Tel = cliente.Tel;
-            result.Email = cliente.Email;
+            result.Ced = dto.Ced;
+            result.Nombre = dto.Nombre;
+            result.Apellidos = dto.Apellidos;
+
             _MyAppDbContext.Update(result);
             _MyAppDbContext.SaveChanges();
-            return result;
 
+            return new ClienteDto
+            {
+                ClienteId = result.ClienteId,
+                Ced = result.Ced,
+                Nombre = result.Nombre,
+                Apellidos = result.Apellidos
+            };
         }
 
-        public Cliente BuscarClientePorCedula(int cedula)
+        public ClienteDto BuscarClientePorCedula(int cedula)
         {
             var result = _MyAppDbContext.Clientes
               .FirstOrDefault(c => c.Ced == cedula);
+
             if (result == null)
                 throw new Exception("No se encuentra al cliente");
-            return result;
+
+            return new ClienteDto
+            {
+                ClienteId = result.ClienteId,
+                Ced = result.Ced,
+                Nombre = result.Nombre,
+                Apellidos = result.Apellidos
+            };
         }
 
-        public Cliente BuscarClientePorId(int clienteId)
+        public ClienteDto BuscarClientePorId(int clienteId)
         {
             var result = _MyAppDbContext.Clientes.Find(clienteId);
             if (result == null)
                 throw new Exception("No se encuentra al cliente");
-            return result;
+
+            return new ClienteDto
+            {
+                ClienteId = result.ClienteId,
+                Ced = result.Ced,
+                Nombre = result.Nombre,
+                Apellidos = result.Apellidos
+            };
         }
 
-        public Cliente CrearCliente(Cliente cliente)
+        public ClienteDto CrearCliente(ClienteDto dto)
         {
-            _MyAppDbContext.Clientes.Add(cliente);
+            var cliente = new Cliente
+            {
+                Ced = dto.Ced,
+        Nombre = dto.Nombre,
+        Apellidos = dto.Apellidos,
+        Tel = 0,
+        Email = ""
+    };
+
+        _MyAppDbContext.Clientes.Add(cliente);
             _MyAppDbContext.SaveChanges();
-            return cliente;
+
+            return new ClienteDto
+            {
+                ClienteId = cliente.ClienteId,
+                Ced = cliente.Ced,
+                Nombre = cliente.Nombre,
+                Apellidos = cliente.Apellidos
+            };
         }
 
         public void EliminarCliente(int clienteId)
         {
             var result = _MyAppDbContext.Clientes.Find(clienteId);
+
             if (result == null)
+
                 throw new Exception("No se encuentra al cliente");
 
             bool tieneReservasActivas = _MyAppDbContext.Reservas
@@ -69,13 +110,19 @@ namespace ProyectoIProgra2.Servicios
                 throw new Exception("No se puede eliminar un cliente con reservas activas");
             _MyAppDbContext.Clientes.Remove(result);
             _MyAppDbContext.SaveChanges();
-
         }
 
-        public List<Cliente> ListarClientes()
+        public List<ClienteDto> ListarClientes()
         {
-            return _MyAppDbContext.Clientes.ToList();
-
+            return _MyAppDbContext.Clientes
+                .Select(c => new ClienteDto
+                {
+                    ClienteId = c.ClienteId,
+                    Ced = c.Ced,
+                    Nombre = c.Nombre,
+                    Apellidos = c.Apellidos
+                })
+                .ToList();
         }
 
         public List<Reserva> ObtenerReservasDelCliente(int clienteId)
@@ -83,13 +130,11 @@ namespace ProyectoIProgra2.Servicios
             return _MyAppDbContext.Reservas
                 .Where(r => r.ClienteId == clienteId)
                 .ToList();
-
         }
         private bool ExisteClientePorCedula(int cedula)
         {
             return _MyAppDbContext.Clientes
                 .Any(c => c.Ced == cedula);
         }
-
     }
 }

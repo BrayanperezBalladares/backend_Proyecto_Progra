@@ -1,4 +1,5 @@
 ﻿using ProyectoIProgra2.Data;
+using ProyectoIProgra2.DTOs;
 using ProyectoIProgra2.Entidades;
 
 namespace ProyectoIProgra2.Servicios
@@ -11,53 +12,58 @@ namespace ProyectoIProgra2.Servicios
             _MyAppDbContext = myAppDbContext;
         }
 
-        public BloqueoMesa ActualizarBloqueoMesa(int bloqueoId, BloqueoMesa bloqueo)
+        public BloqueoMesaDto ActualizarBloqueoMesa(int bloqueoId, BloqueoMesaDto dto)
         {
             var result = _MyAppDbContext.BloqueosMesas.Find(bloqueoId);
             if (result == null)
                 throw new Exception("Bloqueo no encontrado");
 
-            if (bloqueo.HoraInicio >= bloqueo.HoraFin)
+            if (dto.HoraInicio >= dto.HoraFin)
                 throw new Exception("HoraFin debe ser despues a la de HoraInicio");
 
-            result.MesaId = bloqueo.MesaId;
-            result.HoraInicio = bloqueo.HoraInicio;
-            result.HoraFin = bloqueo.HoraFin;
-            result.Fecha = bloqueo.Fecha;
-            result.Detalle = bloqueo.Detalle;
+            result.MesaId = dto.MesaId;
+            result.HoraInicio = dto.HoraInicio;
+            result.HoraFin = dto.HoraFin;
+            result.Fecha = dto.Fecha;
+            result.Detalle = dto.Detalle;
 
             _MyAppDbContext.Update(result);
             _MyAppDbContext.SaveChanges();
-            return result;
+            dto.BloqueoMesaId = result.BloqueoMesaId;
+            return dto;
 
         }
 
-        public List<BloqueoMesa> ActualizarZona(int zonaId, DateTime inicio, DateTime fin, bool activa)
+        public List<BloqueoMesaDto> ActualizarZona(int zonaId, DateTime inicio, DateTime fin, bool activa)
         {
             var zona = _MyAppDbContext.Zonas.Find(zonaId);
             if (zona == null)
                 throw new Exception("Zona no encontrada");
+
             var mesas = _MyAppDbContext.Mesas
-                .Where(m => m.ZonaId == zonaId).ToList();
+                .Where(m => m.ZonaId == zonaId)
+                .ToList();
 
             if (!mesas.Any())
                 throw new Exception("No se encontraron mesas en esa zona");
+
+            var resultado = new List<BloqueoMesaDto>();
+
             if (activa)
             {
-            var bloqueos = new List<BloqueoMesa>();
                 mesas.ForEach(mesa =>
                 {
-                var reservasAfectadas = _MyAppDbContext.Reservas
-                   .Where(r =>
-                    r.MesaId == mesa.MesaId &&
-                    r.EstadoDeReservaId == 1 &&
-                    r.HoraInicio < fin &&
-                    r.HoraFin > inicio)
-                    .ToList();
+                    var reservasAfectadas = _MyAppDbContext.Reservas
+                       .Where(r =>
+                        r.MesaId == mesa.MesaId &&
+                        r.EstadoDeReservaId == 1 &&
+                        r.HoraInicio < fin &&
+                        r.HoraFin > inicio)
+                        .ToList();
 
                     reservasAfectadas.ForEach(r =>
                     {
-                        r.EstadoDeReservaId = 2; 
+                        r.EstadoDeReservaId = 2;
                         _MyAppDbContext.Update(r);
                     });
                     var bloqueo = new BloqueoMesa
@@ -70,11 +76,18 @@ namespace ProyectoIProgra2.Servicios
                     };
 
                     _MyAppDbContext.BloqueosMesas.Add(bloqueo);
-                    bloqueos.Add(bloqueo);
-                });
 
+                    resultado.Add(new BloqueoMesaDto
+                    {
+                        BloqueoMesaId = bloqueo.BloqueoMesaId,
+                        MesaId = bloqueo.MesaId,
+                        Fecha = bloqueo.Fecha,
+                        HoraInicio = bloqueo.HoraInicio,
+                        HoraFin = bloqueo.HoraFin,
+                        Detalle = bloqueo.Detalle
+                    });
+                });
                 _MyAppDbContext.SaveChanges();
-                return bloqueos;
             }
             else
             {
@@ -88,35 +101,54 @@ namespace ProyectoIProgra2.Servicios
                 _MyAppDbContext.BloqueosMesas.RemoveRange(bloqueos);
                 _MyAppDbContext.SaveChanges();
 
-                return bloqueos;
+                 resultado = bloqueos.Select(b => new BloqueoMesaDto
+                {
+                    BloqueoMesaId = b.BloqueoMesaId,
+                    MesaId = b.MesaId,
+                    Fecha = b.Fecha,
+                    HoraInicio = b.HoraInicio,
+                    HoraFin = b.HoraFin,
+                    Detalle = b.Detalle
+                }).ToList();
             }
+
+            return resultado;
         }
 
-        public BloqueoMesa BuscarBloqueoPorId(int bloqueoId)
+        public BloqueoMesaDto BuscarBloqueoPorId(int bloqueoId)
         {
             var result = _MyAppDbContext.BloqueosMesas.Find(bloqueoId);
 
             if (result == null)
                 throw new Exception("Bloqueo no encontrado");
-            return result;
 
+            return new BloqueoMesaDto
+            {
+                BloqueoMesaId = result.BloqueoMesaId,
+                MesaId = result.MesaId,
+                Fecha = result.Fecha,
+                HoraInicio = result.HoraInicio,
+                HoraFin = result.HoraFin,
+                Detalle = result.Detalle
+            }
+            ;
         }
 
-        public BloqueoMesa CrearBloqueoMesa(BloqueoMesa bloqueo)
+        public BloqueoMesaDto CrearBloqueoMesa(BloqueoMesaDto dto)
         {
-            var mesa = _MyAppDbContext.Mesas.Find(bloqueo.MesaId);
+            var mesa = _MyAppDbContext.Mesas.Find(dto.MesaId);
             if (mesa == null)
                 throw new Exception("La mesa no existe");
 
-            if (bloqueo.HoraInicio >= bloqueo.HoraFin)
+            if (dto.HoraInicio >= dto.HoraFin)
                 throw new Exception("HoraFin debe ser posterior a HoraInicio");
 
             var reservasAfectadas = _MyAppDbContext.Reservas
                .Where(r =>
-                   r.MesaId == bloqueo.MesaId &&
+                   r.MesaId == dto.MesaId &&
                    r.EstadoDeReservaId == 1 && 
-                   r.HoraInicio < bloqueo.HoraFin &&
-                   r.HoraFin > bloqueo.HoraInicio)
+                   r.HoraInicio < dto.HoraFin &&
+                   r.HoraFin > dto.HoraInicio)
                .ToList();
 
             reservasAfectadas.ForEach(r =>
@@ -125,25 +157,46 @@ namespace ProyectoIProgra2.Servicios
                 _MyAppDbContext.Update(r);
             });
 
+            var bloqueo = new BloqueoMesa
+            {
+                MesaId = dto.MesaId,
+                Fecha = dto.Fecha,
+                HoraInicio = dto.HoraInicio,
+                HoraFin = dto.HoraFin,
+                Detalle = dto.Detalle
+            };
 
             _MyAppDbContext.BloqueosMesas.Add(bloqueo);
             _MyAppDbContext.SaveChanges();
-            return bloqueo;
+            dto.BloqueoMesaId = bloqueo.BloqueoMesaId;
+            return dto;
 
         }
 
-        public BloqueoMesa DesbloquearMesa(int mesaId)
+        public BloqueoMesaDto DesbloquearMesa(int mesaId)
         {
             var bloqueos = _MyAppDbContext.BloqueosMesas
                 .Where(b => b.MesaId == mesaId)
                 .ToList();
             if (!bloqueos.Any())
-            throw new Exception("No hay bloqueos activos para esa mesa");
+                throw new Exception("No hay bloqueos activos para esa mesa");
 
             _MyAppDbContext.BloqueosMesas.RemoveRange(bloqueos);
             _MyAppDbContext.SaveChanges();
-            return bloqueos.First();
 
+            var b = bloqueos.First();// Solo devolvemos el primer bloqueo eliminado
+                                     // con la información de la mesa desbloqueada
+
+            return new BloqueoMesaDto
+            {
+                BloqueoMesaId = b.BloqueoMesaId,
+                MesaId = b.MesaId,
+                Fecha = b.Fecha,
+                HoraInicio = b.HoraInicio,
+                HoraFin = b.HoraFin,
+                Detalle = b.Detalle
+
+            };
         }
 
         public void EliminarBloqueoMesa(int bloqueoId)
@@ -165,10 +218,19 @@ namespace ProyectoIProgra2.Servicios
 
         }
 
-        public List<BloqueoMesa> ObtenerBloqueosPorMesaId(int mesaId)
+        public List<BloqueoMesaDto> ObtenerBloqueosPorMesaId(int mesaId)
         {
             return _MyAppDbContext.BloqueosMesas
                 .Where(b => b.MesaId == mesaId)
+                .Select(b => new BloqueoMesaDto
+                {
+                    BloqueoMesaId = b.BloqueoMesaId,
+                    MesaId = b.MesaId,
+                    Fecha = b.Fecha,
+                    HoraInicio = b.HoraInicio,
+                    HoraFin = b.HoraFin,
+                    Detalle = b.Detalle
+                })  
                 .ToList();
         }
     }

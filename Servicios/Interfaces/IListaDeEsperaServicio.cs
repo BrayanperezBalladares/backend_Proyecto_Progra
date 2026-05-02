@@ -1,18 +1,20 @@
 ﻿using ProyectoIProgra2.Entidades;
+using ProyectoIProgra2.DTOs;
+using ProyectoIProgra2.Servicios;
 
 public interface IListaDeEsperaServicio
 {
-    public List<ListaDeEspera> ListarListaEspera();
+    public List<ListaDeEsperaDto> ListarListaEspera();
 
-    public ListaDeEspera BuscarPorId(int listaId);
+    public ListaDeEsperaDto BuscarPorId(int listaId);
 
-    public List<ListaDeEspera> ObtenerListaPorTurno(int turnoId);
+    public List<ListaDeEsperaDto> ObtenerListaPorTurno(int turnoId);
 
     public ListaDeEspera CrearListaDeEspera(ListaDeEspera lista);
 
-    public ListaDeEspera ActualizarListaDeEspera(int listaId, ListaDeEspera lista);
+    public ListaDeEsperaDto ActualizarListaDeEspera(int listaId, ListaDeEsperaDto lista);
     public void EliminarClienteEnListaDeEspera(int listaId);
-    public Reserva ConvertirAReserva(int listaId, int mesaId);
+    public ReservaDto ConvertirAReserva(int listaId, int mesaId);
     public ListaDeEspera ObtenerSiguienteEnEspera(int turnoId, int capacidadMesa);
     public bool HayPersonasEnEspera(int turnoId);
 }

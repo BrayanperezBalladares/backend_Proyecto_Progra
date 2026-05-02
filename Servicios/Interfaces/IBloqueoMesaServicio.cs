@@ -1,17 +1,20 @@
-﻿using ProyectoIProgra2.Entidades;
-
-public interface IBloqueoMesaServicio
+﻿using ProyectoIProgra2.DTOs;
+using ProyectoIProgra2.Entidades;
+namespace ProyectoIProgra2.Servicios
 {
-    public BloqueoMesa BuscarBloqueoPorId(int bloqueoId);
+    public interface IBloqueoMesaServicio
+    {
+        public BloqueoMesaDto BuscarBloqueoPorId(int bloqueoId);
 
-    public List<BloqueoMesa> ObtenerBloqueosPorMesaId(int mesaId);
+        public List<BloqueoMesaDto> ObtenerBloqueosPorMesaId(int mesaId);
 
-    public BloqueoMesa CrearBloqueoMesa(BloqueoMesa bloqueo);
+        public BloqueoMesaDto CrearBloqueoMesa(BloqueoMesaDto bloqueo);
 
-    public BloqueoMesa ActualizarBloqueoMesa(int bloqueoId, BloqueoMesa bloqueo); 
+        public BloqueoMesaDto ActualizarBloqueoMesa(int bloqueoId, BloqueoMesaDto bloqueo); 
 
-    public void EliminarBloqueoMesa(int bloqueoId);
-    public bool ExisteInterferenciaBloqueoMesa(int mesaId, DateTime inicio, DateTime fin);
-    public BloqueoMesa DesbloquearMesa(int mesaId);
-    public List<BloqueoMesa> ActualizarZona(int zonaId, DateTime inicio, DateTime fin, bool activa); //se va llamar "actualizar zona" y va a recibir un booleano para la nueva entidad "Activa"
+        public void EliminarBloqueoMesa(int bloqueoId);
+        public bool ExisteInterferenciaBloqueoMesa(int mesaId, DateTime inicio, DateTime fin);
+        public BloqueoMesaDto DesbloquearMesa(int mesaId);
+        public List<BloqueoMesaDto> ActualizarZona(int zonaId, DateTime inicio, DateTime fin, bool activa); //se va llamar "actualizar zona" y va a recibir un booleano para la nueva entidad "Activa"
+    }
 }

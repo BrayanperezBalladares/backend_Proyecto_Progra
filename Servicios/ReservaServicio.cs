@@ -1,4 +1,5 @@
-﻿using ProyectoIProgra2.Data;
+﻿using ProyectoIProgra2.DTOs;
+using ProyectoIProgra2.Data;
 using ProyectoIProgra2.Entidades;
 
 namespace ProyectoIProgra2.Servicios
@@ -11,7 +12,7 @@ namespace ProyectoIProgra2.Servicios
         {
             _MyAppDbContext = myAppDbContext;
         }
-        public Reserva ActualizarReserva(int reservaId, Reserva reserva)
+        public ReservaDto ActualizarReserva(int reservaId, ReservaDto dto)
         {
         var result = _MyAppDbContext.Reservas.Find(reservaId);
          if (result == null)
@@ -20,37 +21,44 @@ namespace ProyectoIProgra2.Servicios
          if (result.EstadoDeReservaId != 1)
          throw new Exception("Solo se pueden modificar reservas en estado Activo");
 
-         bool cambioHorarioMesa = result.MesaId != reserva.MesaId ||
-         result.HoraInicio != reserva.HoraInicio ||
-         result.HoraFin != reserva.HoraFin;
+            bool cambioHorarioMesa = result.MesaId != dto.MesaId ||
+         result.HoraInicio != dto.HoraInicio ||
+         result.HoraFin != dto.HoraFin;
+            ;
 
-        if (cambioHorarioMesa)
+            if (cambioHorarioMesa)
         {
-        if (!ComprobarDisponibilidadDeReservas(reserva.MesaId, reserva.HoraInicio, reserva.HoraFin))
+        if (!ComprobarDisponibilidadDeReservas(dto.MesaId, dto.HoraInicio, dto.HoraFin))
         throw new Exception("La mesa no está disponible en el nuevo horario");
 
         bool bloqueada = _MyAppDbContext.BloqueosMesas.Any(b =>
-        b.MesaId == reserva.MesaId &&
-        reserva.HoraInicio < b.HoraFin &&
-        reserva.HoraFin > b.HoraInicio
+        b.MesaId == dto.MesaId &&
+        dto.HoraInicio < b.HoraFin &&
+        dto.HoraFin > b.HoraInicio
         );
 
         if (bloqueada)
         throw new Exception("La mesa está bloqueada en el nuevo horario");
         }
-        result.Fecha = reserva.Fecha;
-        result.HoraInicio = reserva.HoraInicio;
-        result.HoraFin = reserva.HoraFin;
-        result.CantidaPersonas = reserva.CantidaPersonas;
-        result.MesaId = reserva.MesaId;
-
+        result.Fecha = dto.Fecha;
+        result.HoraInicio = dto.HoraInicio;
+        result.HoraFin = dto.HoraFin;
+        result.CantidaPersonas = dto.CantidadPersonas;
+        result.MesaId = dto.MesaId;
          _MyAppDbContext.Update(result);
          _MyAppDbContext.SaveChanges();
 
-        return result;
+        return new ReservaDto
+        {
+            ReservaId = result.ReservaId,
+            ClienteId = result.ClienteId,
+            TurnoId = result.TurnoId,
+            CantidadPersonas = result.CantidaPersonas,
+            Fecha = result.Fecha
+        };
         }
 
-        public Reserva AsignarMesa(int reservaId, int mesaId)
+        public ReservaDto AsignarMesa(int reservaId, int mesaId)
         {
             var reserva = _MyAppDbContext.Reservas.Find(reservaId);
             if (reserva == null)
@@ -72,25 +80,53 @@ namespace ProyectoIProgra2.Servicios
             _MyAppDbContext.Update(reserva);
             _MyAppDbContext.SaveChanges();
 
-            return reserva;
+            return new ReservaDto
+            {
+                ReservaId = reserva.ReservaId,
+                ClienteId = reserva.ClienteId,
+                TurnoId = reserva.TurnoId,
+                CantidadPersonas = reserva.CantidaPersonas,
+                Fecha = reserva.Fecha
+            };
         }
 
-        public Reserva BuscarReservaPorId(int reservaId)
+        public ReservaDto BuscarReservaPorId(int reservaId)
         {
         var result = _MyAppDbContext.Reservas.Find(reservaId);
          if (result == null)
          throw new Exception("Reserva no encontrada");
-         return result;
+         return new ReservaDto
+         {
+             ReservaId = result.ReservaId,
+             MesaId = result.MesaId,
+             ClienteId = result.ClienteId,
+             TurnoId = result.TurnoId,
+             CantidadPersonas = result.CantidaPersonas,
+             Fecha = result.Fecha,
+             HoraInicio = result.HoraInicio,
+             HoraFin = result.HoraFin
+         };
         }
 
-        public List<Reserva> BuscarReservasPorEstadoId(int estadoId)
+        public List<ReservaDto> BuscarReservasPorEstadoId(int estadoId)
         {
         return _MyAppDbContext.Reservas
         .Where(r => r.EstadoDeReservaId == estadoId)
+        .Select(r => new ReservaDto
+        {
+             ReservaId = r.ReservaId,
+             MesaId = r.MesaId,
+             ClienteId = r.ClienteId,
+             TurnoId = r.TurnoId,
+             CantidadPersonas = r.CantidaPersonas,
+             Fecha = r.Fecha,
+             HoraInicio = r.HoraInicio,
+             HoraFin = r.HoraFin
+        })
         .ToList();
         }
 
-        public Reserva CambiarEstadoReserva(int reservaId, int estadoId)
+        public ReservaDto CambiarEstadoReserva(int reservaId, int estadoId)
         {
             var reserva = _MyAppDbContext.Reservas.Find(reservaId);
             if (reserva == null)
@@ -118,10 +154,20 @@ namespace ProyectoIProgra2.Servicios
             if (estadoNuevo.Estado == "Atendida")
             ProcesarListaDeEspera(reserva.MesaId, reserva.HoraInicio, reserva.HoraFin);
 
-            return reserva;
+            return new ReservaDto
+            {
+               ReservaId = reserva.ReservaId,
+               MesaId = reserva.MesaId,
+               ClienteId = reserva.ClienteId,
+               TurnoId = reserva.TurnoId,
+               CantidadPersonas = reserva.CantidaPersonas,
+               Fecha = reserva.Fecha,
+               HoraInicio = reserva.HoraInicio,
+               HoraFin = reserva.HoraFin
+            };
         }
 
-        public Reserva CancelarReserva(int reservaId)
+        public ReservaDto CancelarReserva(int reservaId)
         {
             var reserva = _MyAppDbContext.Reservas.Find(reservaId);
             if (reserva == null)
@@ -139,7 +185,14 @@ namespace ProyectoIProgra2.Servicios
 
             ProcesarListaDeEspera(reserva.MesaId, reserva.HoraInicio, reserva.HoraFin);
 
-            return reserva;
+            return new ReservaDto
+            {
+                ReservaId = reserva.ReservaId,
+                ClienteId = reserva.ClienteId,
+                TurnoId = reserva.TurnoId,
+                CantidadPersonas = reserva.CantidaPersonas,
+                Fecha = reserva.Fecha
+            }; ;
         }
 
         public bool ComprobarDisponibilidadDeReservas(int mesaId, DateTime inicio, DateTime fin)
@@ -159,26 +212,37 @@ namespace ProyectoIProgra2.Servicios
             return sinReservas && sinBloqueos;
         }
 
-        public Reserva CrearReserva(Reserva reserva)
+        public ReservaDto CrearReserva(ReservaDto dto)
         {
-            if (!ValidarReserva(reserva))
+            if (!ValidarReserva(dto))
                 throw new Exception("Reserva inválida: verifique cliente, mesa, horario y capacidad");
 
             bool mesaBloqueada = _MyAppDbContext.BloqueosMesas.Any(b =>
-                b.MesaId == reserva.MesaId &&
-                reserva.HoraInicio < b.HoraFin &&
-                reserva.HoraFin > b.HoraInicio
+                b.MesaId == dto.MesaId &&
+                dto.HoraInicio < b.HoraFin &&
+                dto.HoraFin > b.HoraInicio
             );
 
             if (mesaBloqueada)
                 throw new Exception("La mesa está bloqueada en ese horario");
 
-            reserva.EstadoDeReservaId = 1;
+            var reserva = new Reserva
+            {
+                MesaId = dto.MesaId,
+                ClienteId = dto.ClienteId,
+                TurnoId = dto.TurnoId,
+                CantidaPersonas = dto.CantidadPersonas,
+                Fecha = dto.Fecha,
+                HoraInicio = dto.HoraInicio,
+                HoraFin = dto.HoraFin,
+                EstadoDeReservaId = 1
+            };
 
             _MyAppDbContext.Reservas.Add(reserva);
             _MyAppDbContext.SaveChanges();
 
-            return reserva;
+            dto.ReservaId = reserva.ReservaId;
+            return dto;
         }
 
         public void EliminarReserva(int reservaId)
@@ -205,23 +269,57 @@ namespace ProyectoIProgra2.Servicios
             );
         }
 
-        public List<Reserva> ListarReservas()
-        {
-            return _MyAppDbContext.Reservas.ToList();
-        }
-
-        public List<Reserva> ObtenerReservaPorClienteId(int clienteId)
+        public List<ReservaDto> ListarReservas()
         {
             return _MyAppDbContext.Reservas
-                .Where(r => r.ClienteId == clienteId)
+                .Select(r => new ReservaDto
+                {
+                     ReservaId = r.ReservaId,
+                     MesaId = r.MesaId,
+                     ClienteId = r.ClienteId,
+                     TurnoId = r.TurnoId,
+                     CantidadPersonas = r.CantidaPersonas,
+                     Fecha = r.Fecha,
+                     HoraInicio = r.HoraInicio,
+                     HoraFin = r.HoraFin
+                })
                 .ToList();
         }
 
-        public List<Reserva> ObtenerReservasPorFecha(DateTime fecha)
+        public List<ReservaDto> ObtenerReservaPorClienteId(int clienteId)
+        {
+            return _MyAppDbContext.Reservas
+                .Where(r => r.ClienteId == clienteId)
+                .Select(r => new ReservaDto
+                {
+                     ReservaId = r.ReservaId,
+                     MesaId = r.MesaId,
+                     ClienteId = r.ClienteId,
+                     TurnoId = r.TurnoId,
+                     CantidadPersonas = r.CantidaPersonas,
+                     Fecha = r.Fecha,
+                     HoraInicio = r.HoraInicio,
+                     HoraFin = r.HoraFin
+                })
+                .ToList();
+        }
+
+        public List<ReservaDto> ObtenerReservasPorFecha(DateTime fecha)
         {
             return _MyAppDbContext.Reservas
             .Where(r => r.Fecha.Date == fecha.Date)
-             .ToList();
+            .Select(r => new ReservaDto
+            {
+                 ReservaId = r.ReservaId,
+                 MesaId = r.MesaId,
+                 ClienteId = r.ClienteId,
+                 TurnoId = r.TurnoId,
+                 CantidadPersonas = r.CantidaPersonas,
+                 Fecha = r.Fecha,
+                 HoraInicio = r.HoraInicio,
+                 HoraFin = r.HoraFin
+            })
+            .ToList();
         }
 
         public void ProcesarListaDeEspera(int mesaId, DateTime inicio, DateTime fin)
@@ -260,7 +358,7 @@ namespace ProyectoIProgra2.Servicios
             }
             }
 
-        public bool ValidarReserva(Reserva reserva)
+        public bool ValidarReserva(ReservaDto reserva)
         {
           if (reserva.HoraInicio >= reserva.HoraFin)
                 return false;
@@ -271,14 +369,14 @@ namespace ProyectoIProgra2.Servicios
 
           if (cliente.Ced == 0 || cliente.Tel == 0)
           return false;
-            
+
           var mesa = _MyAppDbContext.Mesas.Find(reserva.MesaId);
-          if (mesa == null || mesa.Capacidad < reserva.CantidaPersonas)
+          if (mesa == null || mesa.Capacidad < reserva.CantidadPersonas) // note typo fix CantidadPersonas instead of CantidaPersonas here since it's a DTO now
           return false;
 
           if (!EstaDentroDeTurno(reserva.HoraInicio, reserva.HoraFin))
           return false;
-            
+
          if (!ComprobarDisponibilidadDeReservas(reserva.MesaId, reserva.HoraInicio, reserva.HoraFin))
          return false;
 

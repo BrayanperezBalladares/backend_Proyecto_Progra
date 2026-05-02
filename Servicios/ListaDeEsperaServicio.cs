@@ -1,4 +1,5 @@
 ﻿using ProyectoIProgra2.Data;
+using ProyectoIProgra2.DTOs;
 using ProyectoIProgra2.Entidades;
 
 namespace ProyectoIProgra2.Servicios
@@ -11,36 +12,40 @@ namespace ProyectoIProgra2.Servicios
             _MyAppDbContext = myAppDbContext;
         }
 
-        public ListaDeEspera ActualizarListaDeEspera(int listaId, ListaDeEspera lista)
+        public ListaDeEsperaDto ActualizarListaDeEspera(int listaId, ListaDeEsperaDto dto)
         {
             var result = _MyAppDbContext.ListasDeEspera.Find(listaId);
 
             if (result == null)
                 throw new Exception("Entrada en lista de espera no encontrada");
 
-            result.ClienteId = lista.ClienteId;
-            result.TurnoId = lista.TurnoId;
-            result.CantidadPersonas = lista.CantidadPersonas;
-            result.HoraSolicitud = lista.HoraSolicitud;
+            result.ClienteId = dto.ClienteId;
+            result.TurnoId = dto.TurnoId;
+            result.CantidadPersonas = dto.CantidadPersonas;
+            
 
             _MyAppDbContext.Update(result);
             _MyAppDbContext.SaveChanges();
-            return result;
+            return dto;
 
         }
 
-        public ListaDeEspera BuscarPorId(int listaId)
+        public ListaDeEsperaDto BuscarPorId(int listaId)
         {
             var result = _MyAppDbContext.ListasDeEspera.Find(listaId);
 
             if (result == null)
                 throw new Exception("Entrada de lista de espera no encontrada");
 
-            return result;
-
+            return new ListaDeEsperaDto
+            {
+                ClienteId = result.ClienteId,
+                TurnoId = result.TurnoId,
+                CantidadPersonas = result.CantidadPersonas
+            };
         }
 
-        public Reserva ConvertirAReserva(int listaId, int mesaId)
+        public ReservaDto ConvertirAReserva(int listaId, int mesaId)
         {
             var lista = _MyAppDbContext.ListasDeEspera.Find(listaId);
             if (lista == null)
@@ -91,7 +96,14 @@ namespace ProyectoIProgra2.Servicios
             _MyAppDbContext.ListasDeEspera.Remove(lista);
             _MyAppDbContext.SaveChanges();
 
-            return nuevaReserva;
+            return new ReservaDto
+            {
+                ReservaId = nuevaReserva.ReservaId,
+                ClienteId = nuevaReserva.ClienteId,
+                TurnoId = nuevaReserva.TurnoId,
+                CantidadPersonas = nuevaReserva.CantidaPersonas,
+                Fecha = nuevaReserva.Fecha
+            };
 
 
         }
@@ -133,20 +145,33 @@ namespace ProyectoIProgra2.Servicios
                  .Any(l => l.TurnoId == turnoId);
         }
 
-        public List<ListaDeEspera> ListarListaEspera()
+        public List<ListaDeEsperaDto> ListarListaEspera()
         {
             return _MyAppDbContext.ListasDeEspera
-               .OrderBy(l => l.HoraSolicitud)
-               .ToList();
+                .OrderBy(l => l.HoraSolicitud)
+                .Select(l => new ListaDeEsperaDto
+                {
+                    ClienteId = l.ClienteId,
+                    TurnoId = l.TurnoId,
+                    CantidadPersonas = l.CantidadPersonas
+                })
+                .ToList();
         }
 
-        public List<ListaDeEspera> ObtenerListaPorTurno(int turnoId)
+        public List<ListaDeEsperaDto> ObtenerListaPorTurno(int turnoId)
         {
             return _MyAppDbContext.ListasDeEspera
                 .Where(l => l.TurnoId == turnoId)
                 .OrderBy(l => l.HoraSolicitud)
-                .ToList(); ;
+                .Select(l => new ListaDeEsperaDto
+                {
+                    ClienteId = l.ClienteId,
+                    TurnoId = l.TurnoId,
+                    CantidadPersonas = l.CantidadPersonas
+                })
+                .ToList();
         }
+
 
         public ListaDeEspera ObtenerSiguienteEnEspera(int turnoId, int capacidadMesa)
         {
