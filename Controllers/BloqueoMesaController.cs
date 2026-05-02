@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using ProyectoIProgra2.DTOs;
+using ProyectoIProgra2.Servicios;
 
 namespace ProyectoIProgra2.Controllers
 {
@@ -8,36 +8,138 @@ namespace ProyectoIProgra2.Controllers
     [ApiController]
     public class BloqueoMesaController : ControllerBase
     {
-        // GET: api/<BloqueoMesaController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IBloqueoMesaServicio _bloqueoMesaServicio;
+
+        public BloqueoMesaController(IBloqueoMesaServicio bloqueoMesaServicio)
         {
-            return new string[] { "value1", "value2" };
+            _bloqueoMesaServicio = bloqueoMesaServicio;
         }
 
-        // GET api/<BloqueoMesaController>/5
+        // GET: api/bloqueomesa/mesa/5
+        [HttpGet("mesa/{mesaId}")]
+        public ActionResult<List<BloqueoMesaDto>> ObtenerBloqueosPorMesaId(int mesaId)
+        {
+            var bloqueos = _bloqueoMesaServicio.ObtenerBloqueosPorMesaId(mesaId);
+            return Ok(bloqueos);
+        }
+
+        // GET: api/bloqueomesa/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult<BloqueoMesaDto> BuscarBloqueoPorId(int id)
         {
-            return "value";
+            try
+            {
+                var bloqueo = _bloqueoMesaServicio.BuscarBloqueoPorId(id);
+                return Ok(bloqueo);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
-        // POST api/<BloqueoMesaController>
+        // GET: api/bloqueomesa/interferencia?mesaId=1&inicio=2025-01-01T12:00&fin=2025-01-01T14:00
+        [HttpGet("interferencia")]
+        public ActionResult<bool> ExisteInterferencia([FromQuery] int mesaId,
+                                                        [FromQuery] DateTime inicio,
+                                                        [FromQuery] DateTime fin)
+        {
+            var existe = _bloqueoMesaServicio.ExisteInterferenciaBloqueoMesa(mesaId, inicio, fin);
+            return Ok(existe);
+        }
+
+        // POST: api/bloqueomesa
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<BloqueoMesaDto> CrearBloqueoMesa([FromBody] BloqueoMesaDto dto)
         {
+            try
+            {
+                var bloqueo = _bloqueoMesaServicio.CrearBloqueoMesa(dto);
+                return CreatedAtAction(nameof(BuscarBloqueoPorId), new { id = bloqueo.BloqueoMesaId }, bloqueo);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // PUT api/<BloqueoMesaController>/5
+        // POST: api/bloqueomesa/zona
+        [HttpPost("zona")]
+        public ActionResult<List<BloqueoMesaDto>> BloquearZona([FromQuery] int zonaId,
+                                                                [FromQuery] DateTime inicio,
+                                                                [FromQuery] DateTime fin)
+        {
+            try
+            {
+                var bloqueos = _bloqueoMesaServicio.ActualizarZona(zonaId, inicio, fin, true);
+                return Ok(bloqueos);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // DELETE: api/bloqueomesa/zona
+        [HttpDelete("zona")]
+        public ActionResult<List<BloqueoMesaDto>> DesbloquearZona([FromQuery] int zonaId,
+                                                                    [FromQuery] DateTime inicio,
+                                                                    [FromQuery] DateTime fin)
+        {
+            try
+            {
+                var bloqueos = _bloqueoMesaServicio.ActualizarZona(zonaId, inicio, fin, false);
+                return Ok(bloqueos);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // PUT: api/bloqueomesa/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult<BloqueoMesaDto> ActualizarBloqueoMesa(int id, [FromBody] BloqueoMesaDto dto)
         {
+            try
+            {
+                var bloqueo = _bloqueoMesaServicio.ActualizarBloqueoMesa(id, dto);
+                return Ok(bloqueo);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // DELETE api/<BloqueoMesaController>/5
+        // DELETE: api/bloqueomesa/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult EliminarBloqueoMesa(int id)
         {
+            try
+            {
+                _bloqueoMesaServicio.EliminarBloqueoMesa(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // DELETE: api/bloqueomesa/mesa/5/desbloquear
+        [HttpDelete("mesa/{mesaId}/desbloquear")]
+        public ActionResult<BloqueoMesaDto> DesbloquearMesa(int mesaId)
+        {
+            try
+            {
+                var bloqueo = _bloqueoMesaServicio.DesbloquearMesa(mesaId);
+                return Ok(bloqueo);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

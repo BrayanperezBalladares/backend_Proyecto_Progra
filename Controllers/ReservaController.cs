@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using ProyectoIProgra2.DTOs;
+using ProyectoIProgra2.Servicios;
 
 namespace ProyectoIProgra2.Controllers
 {
@@ -8,36 +8,169 @@ namespace ProyectoIProgra2.Controllers
     [ApiController]
     public class ReservaController : ControllerBase
     {
-        // GET: api/<ReservaController>
+        private readonly IReservaServicio _reservaServicio;
+
+        public ReservaController(IReservaServicio reservaServicio)
+        {
+            _reservaServicio = reservaServicio;
+        }
+
+        // GET: api/reserva
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ActionResult<List<ReservaDto>> ListarReservas()
         {
-            return new string[] { "value1", "value2" };
+            var reservas = _reservaServicio.ListarReservas();
+            return Ok(reservas);
         }
 
-        // GET api/<ReservaController>/5
+        // GET: api/reserva/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult<ReservaDto> BuscarReservaPorId(int id)
         {
-            return "value";
+            try
+            {
+                var reserva = _reservaServicio.BuscarReservaPorId(id);
+                return Ok(reserva);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
-        // POST api/<ReservaController>
+        // GET: api/reserva/cliente/3
+        [HttpGet("cliente/{clienteId}")]
+        public ActionResult<List<ReservaDto>> ObtenerReservaPorClienteId(int clienteId)
+        {
+            var reservas = _reservaServicio.ObtenerReservaPorClienteId(clienteId);
+            return Ok(reservas);
+        }
+
+        // GET: api/reserva/fecha?fecha=2025-01-01
+        [HttpGet("fecha")]
+        public ActionResult<List<ReservaDto>> ObtenerReservasPorFecha([FromQuery] DateTime fecha)
+        {
+            var reservas = _reservaServicio.ObtenerReservasPorFecha(fecha);
+            return Ok(reservas);
+        }
+
+        // GET: api/reserva/estado/1
+        [HttpGet("estado/{estadoId}")]
+        public ActionResult<List<ReservaDto>> BuscarReservasPorEstadoId(int estadoId)
+        {
+            var reservas = _reservaServicio.BuscarReservasPorEstadoId(estadoId);
+            return Ok(reservas);
+        }
+
+        // GET: api/reserva/disponibilidad?mesaId=1&inicio=2025-01-01T12:00&fin=2025-01-01T14:00
+        [HttpGet("disponibilidad")]
+        public ActionResult<bool> ComprobarDisponibilidad(
+            [FromQuery] int mesaId,
+            [FromQuery] DateTime inicio,
+            [FromQuery] DateTime fin)
+        {
+            var disponible = _reservaServicio.ComprobarDisponibilidadDeReservas(mesaId, inicio, fin);
+            return Ok(disponible);
+        }
+
+        // GET: api/reserva/dentroturno?inicio=2025-01-01T12:00&fin=2025-01-01T14:00
+        [HttpGet("dentroturno")]
+        public ActionResult<bool> EstaDentroDeTurno(
+            [FromQuery] DateTime inicio,
+            [FromQuery] DateTime fin)
+        {
+            var dentroTurno = _reservaServicio.EstaDentroDeTurno(inicio, fin);
+            return Ok(dentroTurno);
+        }
+
+        // POST: api/reserva
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<ReservaDto> CrearReserva([FromBody] ReservaDto dto)
         {
+            try
+            {
+                var reserva = _reservaServicio.CrearReserva(dto);
+                return CreatedAtAction(nameof(BuscarReservaPorId), new { id = reserva.ReservaId }, reserva);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // PUT api/<ReservaController>/5
+        // PUT: api/reserva/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult<ReservaDto> ActualizarReserva(int id, [FromBody] ReservaDto dto)
         {
+            try
+            {
+                var reserva = _reservaServicio.ActualizarReserva(id, dto);
+                return Ok(reserva);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // DELETE api/<ReservaController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // PUT: api/reserva/5/mesa/3
+        [HttpPut("{id}/mesa/{mesaId}")]
+        public ActionResult<ReservaDto> AsignarMesa(int id, int mesaId)
         {
+            try
+            {
+                var reserva = _reservaServicio.AsignarMesa(id, mesaId);
+                return Ok(reserva);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // PUT: api/reserva/5/estado/2
+        [HttpPut("{id}/estado/{estadoId}")]
+        public ActionResult<ReservaDto> CambiarEstadoReserva(int id, int estadoId)
+        {
+            try
+            {
+                var reserva = _reservaServicio.CambiarEstadoReserva(id, estadoId);
+                return Ok(reserva);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // PUT: api/reserva/5/cancelar
+        [HttpPut("{id}/cancelar")]
+        public ActionResult<ReservaDto> CancelarReserva(int id)
+        {
+            try
+            {
+                var reserva = _reservaServicio.CancelarReserva(id);
+                return Ok(reserva);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // DELETE: api/reserva/5
+        [HttpDelete("{id}")]
+        public ActionResult EliminarReserva(int id)
+        {
+            try
+            {
+                _reservaServicio.EliminarReserva(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

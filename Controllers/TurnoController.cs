@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using ProyectoIProgra2.Servicios;
 
 namespace ProyectoIProgra2.Controllers
 {
@@ -8,36 +7,21 @@ namespace ProyectoIProgra2.Controllers
     [ApiController]
     public class TurnoController : ControllerBase
     {
-        // GET: api/<TurnoController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly ITurnoServicio _turnoServicio;
+
+        public TurnoController(ITurnoServicio turnoServicio)
         {
-            return new string[] { "value1", "value2" };
+            _turnoServicio = turnoServicio;
         }
 
-        // GET api/<TurnoController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        // GET: api/turno/dentroturno?horaInicio=12&horaFin=14
+        [HttpGet("dentroturno")]
+        public ActionResult<bool> EstaDentroDeTurno(
+            [FromQuery] int horaInicio,
+            [FromQuery] int horaFin)
         {
-            return "value";
-        }
-
-        // POST api/<TurnoController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<TurnoController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<TurnoController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            var resultado = _turnoServicio.EstaDentroDeTurno(horaInicio, horaFin);
+            return Ok(resultado);
         }
     }
 }

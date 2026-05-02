@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using ProyectoIProgra2.Entidades;
+using ProyectoIProgra2.Servicios;
 
 namespace ProyectoIProgra2.Controllers
 {
@@ -8,36 +8,94 @@ namespace ProyectoIProgra2.Controllers
     [ApiController]
     public class ZonaController : ControllerBase
     {
-        // GET: api/<ZonaController>
+        private readonly IZonaServicio _zonaServicio;
+
+        public ZonaController(IZonaServicio zonaServicio)
+        {
+            _zonaServicio = zonaServicio;
+        }
+
+        // GET: api/zona
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ActionResult<List<Zona>> ListarZonas()
         {
-            return new string[] { "value1", "value2" };
+            var zonas = _zonaServicio.ListarZonas();
+            return Ok(zonas);
         }
 
-        // GET api/<ZonaController>/5
+        // GET: api/zona/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult<Zona> BuscarZonaPorId(int id)
         {
-            return "value";
+            try
+            {
+                var zona = _zonaServicio.BuscarZonaPorId(id);
+                return Ok(zona);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
-        // POST api/<ZonaController>
+        // GET: api/zona/5/mesas
+        [HttpGet("{id}/mesas")]
+        public ActionResult<List<Mesa>> ObtenerMesasDeUnaZona(int id)
+        {
+            try
+            {
+                var mesas = _zonaServicio.ObtenerMesasDeUnaZona(id);
+                return Ok(mesas);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        // POST: api/zona
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<Zona> CrearZona([FromBody] Zona zona)
         {
+            try
+            {
+                var nuevaZona = _zonaServicio.CrearZona(zona);
+                return CreatedAtAction(nameof(BuscarZonaPorId), new { id = nuevaZona.ZonaId }, nuevaZona);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // PUT api/<ZonaController>/5
+        // PUT: api/zona/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult<Zona> ActualizarZona(int id, [FromBody] Zona zona)
         {
+            try
+            {
+                var zonaActualizada = _zonaServicio.ActualizarZona(id, zona);
+                return Ok(zonaActualizada);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // DELETE api/<ZonaController>/5
+        // DELETE: api/zona/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult EliminarZona(int id)
         {
+            try
+            {
+                _zonaServicio.EliminarZona(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

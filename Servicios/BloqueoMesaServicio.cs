@@ -54,7 +54,7 @@ namespace ProyectoIProgra2.Servicios
                 mesas.ForEach(mesa =>
                 {
                     var reservasAfectadas = _MyAppDbContext.Reservas
-                       .Where(r =>
+                        .Where(r =>
                         r.MesaId == mesa.MesaId &&
                         r.EstadoDeReservaId == 1 &&
                         r.HoraInicio < fin &&
@@ -101,7 +101,7 @@ namespace ProyectoIProgra2.Servicios
                 _MyAppDbContext.BloqueosMesas.RemoveRange(bloqueos);
                 _MyAppDbContext.SaveChanges();
 
-                 resultado = bloqueos.Select(b => new BloqueoMesaDto
+                resultado = bloqueos.Select(b => new BloqueoMesaDto
                 {
                     BloqueoMesaId = b.BloqueoMesaId,
                     MesaId = b.MesaId,
@@ -144,12 +144,12 @@ namespace ProyectoIProgra2.Servicios
                 throw new Exception("HoraFin debe ser posterior a HoraInicio");
 
             var reservasAfectadas = _MyAppDbContext.Reservas
-               .Where(r =>
-                   r.MesaId == dto.MesaId &&
-                   r.EstadoDeReservaId == 1 && 
-                   r.HoraInicio < dto.HoraFin &&
-                   r.HoraFin > dto.HoraInicio)
-               .ToList();
+                .Where(r =>
+                    r.MesaId == dto.MesaId &&
+                    r.EstadoDeReservaId == 1 &&
+                    r.HoraInicio < dto.HoraFin &&
+                    r.HoraFin > dto.HoraInicio)
+                .ToList();
 
             reservasAfectadas.ForEach(r =>
             {
@@ -185,7 +185,7 @@ namespace ProyectoIProgra2.Servicios
             _MyAppDbContext.SaveChanges();
 
             var b = bloqueos.First();// Solo devolvemos el primer bloqueo eliminado
-                                     // con la información de la mesa desbloqueada
+                                        // con la información de la mesa desbloqueada
 
             return new BloqueoMesaDto
             {
@@ -230,9 +230,8 @@ namespace ProyectoIProgra2.Servicios
                     HoraInicio = b.HoraInicio,
                     HoraFin = b.HoraFin,
                     Detalle = b.Detalle
-                })  
+                })
                 .ToList();
         }
     }
 }
-       

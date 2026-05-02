@@ -78,17 +78,17 @@ namespace ProyectoIProgra2.Servicios
         m.Capacidad >= capacidad &&
 
         !_MyAppDbContext.Reservas.Any(r =>
-         r.MesaId == m.MesaId &&
-         r.EstadoDeReservaId != 2 &&
-         inicio < r.HoraFin &&
-         fin > r.HoraInicio) &&
+            r.MesaId == m.MesaId &&
+            r.EstadoDeReservaId != 2 &&
+            inicio < r.HoraFin &&
+            fin > r.HoraInicio) &&
 
         !_MyAppDbContext.BloqueosMesas.Any(b =>
-         b.MesaId == m.MesaId &&
-         inicio < b.HoraFin &&
-         fin > b.HoraInicio)
-         )
-         .ToList();
+            b.MesaId == m.MesaId &&
+            inicio < b.HoraFin &&
+            fin > b.HoraInicio)
+            )
+            .ToList();
 
         }
 

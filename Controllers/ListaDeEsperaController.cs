@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using ProyectoIProgra2.DTOs;
+using ProyectoIProgra2.Entidades;
+using ProyectoIProgra2.Servicios;
 
 namespace ProyectoIProgra2.Controllers
 {
@@ -8,36 +9,125 @@ namespace ProyectoIProgra2.Controllers
     [ApiController]
     public class ListaDeEsperaController : ControllerBase
     {
-        // GET: api/<ListaDeEsperaController>
+        private readonly IListaDeEsperaServicio _listaDeEsperaServicio;
+
+        public ListaDeEsperaController(IListaDeEsperaServicio listaDeEsperaServicio)
+        {
+            _listaDeEsperaServicio = listaDeEsperaServicio;
+        }
+
+        // GET: api/listadeespera
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ActionResult<List<ListaDeEsperaDto>> ListarListaEspera()
         {
-            return new string[] { "value1", "value2" };
+            var lista = _listaDeEsperaServicio.ListarListaEspera();
+            return Ok(lista);
         }
 
-        // GET api/<ListaDeEsperaController>/5
+        // GET: api/listadeespera/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult<ListaDeEsperaDto> BuscarPorId(int id)
         {
-            return "value";
+            try
+            {
+                var entrada = _listaDeEsperaServicio.BuscarPorId(id);
+                return Ok(entrada);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
-        // POST api/<ListaDeEsperaController>
+        // GET: api/listadeespera/turno/3
+        [HttpGet("turno/{turnoId}")]
+        public ActionResult<List<ListaDeEsperaDto>> ObtenerListaPorTurno(int turnoId)
+        {
+            var lista = _listaDeEsperaServicio.ObtenerListaPorTurno(turnoId);
+            return Ok(lista);
+        }
+
+        // GET: api/listadeespera/turno/3/siguiente?capacidadMesa=4
+        [HttpGet("turno/{turnoId}/siguiente")]
+        public ActionResult<ListaDeEspera> ObtenerSiguienteEnEspera(int turnoId, [FromQuery] int capacidadMesa)
+        {
+            try
+            {
+                var siguiente = _listaDeEsperaServicio.ObtenerSiguienteEnEspera(turnoId, capacidadMesa);
+                return Ok(siguiente);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        // GET: api/listadeespera/turno/3/hayespera
+        [HttpGet("turno/{turnoId}/hayespera")]
+        public ActionResult<bool> HayPersonasEnEspera(int turnoId)
+        {
+            var hay = _listaDeEsperaServicio.HayPersonasEnEspera(turnoId);
+            return Ok(hay);
+        }
+
+        // POST: api/listadeespera
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<ListaDeEspera> CrearListaDeEspera([FromBody] ListaDeEspera lista)
         {
+            try
+            {
+                var entrada = _listaDeEsperaServicio.CrearListaDeEspera(lista);
+                return CreatedAtAction(nameof(BuscarPorId), new { id = entrada.ListaDeEsperaId }, entrada);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // PUT api/<ListaDeEsperaController>/5
+        // POST: api/listadeespera/5/convertir?mesaId=2
+        [HttpPost("{id}/convertir")]
+        public ActionResult<ReservaDto> ConvertirAReserva(int id, [FromQuery] int mesaId)
+        {
+            try
+            {
+                var reserva = _listaDeEsperaServicio.ConvertirAReserva(id, mesaId);
+                return Ok(reserva);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // PUT: api/listadeespera/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult<ListaDeEsperaDto> ActualizarListaDeEspera(int id, [FromBody] ListaDeEsperaDto dto)
         {
+            try
+            {
+                var entrada = _listaDeEsperaServicio.ActualizarListaDeEspera(id, dto);
+                return Ok(entrada);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // DELETE api/<ListaDeEsperaController>/5
+        // DELETE: api/listadeespera/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult EliminarClienteEnListaDeEspera(int id)
         {
+            try
+            {
+                _listaDeEsperaServicio.EliminarClienteEnListaDeEspera(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
