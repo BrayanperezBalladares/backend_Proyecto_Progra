@@ -48,7 +48,6 @@ namespace ProyectoIProgra2.Servicios
                 throw new Exception("La mesa está bloqueada en ese horario");
 
             return mesa;
-
         }
 
         public Mesa CrearMesa(Mesa mesa)

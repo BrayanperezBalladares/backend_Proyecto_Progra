@@ -1,20 +1,22 @@
-﻿using ProyectoIProgra2.Entidades;
+﻿using ProyectoIProgra2.DTOs;
+using ProyectoIProgra2.Entidades;
 
-public interface IClienteServicio
+namespace ProyectoIProgra2.Servicios
 {
-    public List<Cliente> ListarClientes();
+    public interface IClienteServicio
+    {
+        public List<ClienteDto> ListarClientes();
 
-    public Cliente BuscarClientePorId(int clienteId);
+        public ClienteDto BuscarClientePorId(int clienteId);
 
-    public Cliente BuscarClientePorCedula(int cedula);
+        public ClienteDto BuscarClientePorCedula(int cedula);
 
-    public List<Reserva> ObtenerReservasDelCliente(int clienteId);
+        public List<Reserva> ObtenerReservasDelCliente(int clienteId);
 
-    public Cliente CrearCliente(Cliente cliente);
+        public ClienteDto CrearCliente(ClienteDto cliente);
 
-    public Cliente ActualizarCliente(int clienteId, Cliente cliente);
+        public ClienteDto ActualizarCliente(int clienteId, ClienteDto cliente);
 
-    public void EliminarCliente(int clienteId);
-
-  
+        public void EliminarCliente(int clienteId);
+    }
 }

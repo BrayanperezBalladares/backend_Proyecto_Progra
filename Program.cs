@@ -13,8 +13,6 @@ builder.Services.AddScoped<IBloqueoMesaServicio, BloqueoMesaServicio>();
 
 builder.Services.AddScoped<IClienteServicio, ClienteServicio>();
 
-builder.Services.AddScoped<IEstadoDeReservaServicio, EstadoDeReservaServicio>();
-
 builder.Services.AddScoped<IListaDeEsperaServicio, ListaDeEsperaServicio>();
 
 builder.Services.AddScoped<IMesaServicio, MesaServicio>();
