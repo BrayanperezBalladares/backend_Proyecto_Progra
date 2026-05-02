@@ -1,43 +1,116 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using ProyectoIProgra2.DTOs;
+using ProyectoIProgra2.Servicios;
 
 namespace ProyectoIProgra2.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class ClienteController : ControllerBase
     {
-        // GET: api/<ClienteController>
+        private readonly IClienteServicio _clienteServicio;
+
+        public ClienteController(IClienteServicio clienteServicio)
+        {
+            _clienteServicio = clienteServicio;
+        }
+
+        // GET: api/cliente
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ActionResult<List<ClienteDto>> ListarClientes()
         {
-            return new string[] { "value1", "value2" };
+            var clientes = _clienteServicio.ListarClientes();
+            return Ok(clientes);
         }
 
-        // GET api/<ClienteController>/5
+        // GET: api/cliente/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult<ClienteDto> BuscarClientePorId(int id)
         {
-            return "value";
+            try
+            {
+                var cliente = _clienteServicio.BuscarClientePorId(id);
+                return Ok(cliente);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
-        // POST api/<ClienteController>
+        // GET: api/cliente/cedula/123456789
+        [HttpGet("cedula/{cedula}")]
+        public ActionResult<ClienteDto> BuscarClientePorCedula(int cedula)
+        {
+            try
+            {
+                var cliente = _clienteServicio.BuscarClientePorCedula(cedula);
+                return Ok(cliente);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        // GET: api/cliente/5/reservas
+        [HttpGet("{id}/reservas")]
+        public ActionResult ObtenerReservasDelCliente(int id)
+        {
+            try
+            {
+                var reservas = _clienteServicio.ObtenerReservasDelCliente(id);
+                return Ok(reservas);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        // POST: api/cliente
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<ClienteDto> CrearCliente([FromBody] ClienteDto dto)
         {
+            try
+            {
+                var cliente = _clienteServicio.CrearCliente(dto);
+                return CreatedAtAction(nameof(BuscarClientePorId), new { id = cliente.ClienteId }, cliente);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // PUT api/<ClienteController>/5
+        // PUT: api/cliente/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult<ClienteDto> ActualizarCliente(int id, [FromBody] ClienteDto dto)
         {
+            try
+            {
+                var cliente = _clienteServicio.ActualizarCliente(id, dto);
+                return Ok(cliente);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // DELETE api/<ClienteController>/5
+        // DELETE: api/cliente/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult EliminarCliente(int id)
         {
+            try
+            {
+                _clienteServicio.EliminarCliente(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
