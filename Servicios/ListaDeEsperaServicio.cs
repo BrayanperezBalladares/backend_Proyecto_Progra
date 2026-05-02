@@ -51,7 +51,7 @@ namespace ProyectoIProgra2.Servicios
             if (lista == null)
                 throw new Exception("Entrada de lista de espera no encontrada");
 
-             var turno = _MyAppDbContext.Turnos.Find(lista.TurnoId);
+            var turno = _MyAppDbContext.Turnos.Find(lista.TurnoId);
             if (turno == null)
                 throw new Exception("El turno no existe");
 
@@ -142,7 +142,7 @@ namespace ProyectoIProgra2.Servicios
         public bool HayPersonasEnEspera(int turnoId)
         {
             return _MyAppDbContext.ListasDeEspera
-                 .Any(l => l.TurnoId == turnoId);
+                    .Any(l => l.TurnoId == turnoId);
         }
 
         public List<ListaDeEsperaDto> ListarListaEspera()
@@ -177,7 +177,7 @@ namespace ProyectoIProgra2.Servicios
         {
         var result = _MyAppDbContext.ListasDeEspera
         .Where(P => P.TurnoId == turnoId &&
-         P.CantidadPersonas <= capacidadMesa)
+        P.CantidadPersonas <= capacidadMesa)
         .OrderBy(P => P.HoraSolicitud)
         .FirstOrDefault();
 

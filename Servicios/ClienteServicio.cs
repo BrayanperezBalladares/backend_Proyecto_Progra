@@ -42,7 +42,7 @@ namespace ProyectoIProgra2.Servicios
         public ClienteDto BuscarClientePorCedula(int cedula)
         {
             var result = _MyAppDbContext.Clientes
-              .FirstOrDefault(c => c.Ced == cedula);
+                .FirstOrDefault(c => c.Ced == cedula);
 
             if (result == null)
                 throw new Exception("No se encuentra al cliente");
@@ -104,7 +104,7 @@ namespace ProyectoIProgra2.Servicios
 
             bool tieneReservasActivas = _MyAppDbContext.Reservas
                 .Any(r => r.ClienteId == clienteId &&
-                          r.EstadoDeReservaId == 1);
+                            r.EstadoDeReservaId == 1);
 
             if (tieneReservasActivas)
                 throw new Exception("No se puede eliminar un cliente con reservas activas");

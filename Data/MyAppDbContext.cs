@@ -43,7 +43,7 @@ namespace ProyectoIProgra2.Data
                 new Mesa { MesaId = 10, Capacidad = 8, ZonaId = 4 }
             );
 
-            // TURNOS (solo una vez ✅)
+            // TURNOS (solo una vez)
             modelBuilder.Entity<Turno>().HasData(
                 new Turno { TurnoId = 1, HoraInicio = 8, HoraFin = 11 },
                 new Turno { TurnoId = 2, HoraInicio = 12, HoraFin = 15 },
@@ -66,7 +66,7 @@ namespace ProyectoIProgra2.Data
                 new EstadoDeReserva { EstadoDeReservaId = 3, Estado = "Atendida" }
             );
 
-            // BLOQUEOS (solo una vez ✅)
+            // BLOQUEOS (solo una vez)
             modelBuilder.Entity<BloqueoMesa>().HasData(
                 new BloqueoMesa
                 {

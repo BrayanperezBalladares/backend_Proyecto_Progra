@@ -93,19 +93,19 @@ namespace ProyectoIProgra2.Servicios
         public ReservaDto BuscarReservaPorId(int reservaId)
         {
         var result = _MyAppDbContext.Reservas.Find(reservaId);
-         if (result == null)
-         throw new Exception("Reserva no encontrada");
-         return new ReservaDto
-         {
-             ReservaId = result.ReservaId,
-             MesaId = result.MesaId,
-             ClienteId = result.ClienteId,
-             TurnoId = result.TurnoId,
-             CantidadPersonas = result.CantidaPersonas,
-             Fecha = result.Fecha,
-             HoraInicio = result.HoraInicio,
-             HoraFin = result.HoraFin
-         };
+            if (result == null)
+            throw new Exception("Reserva no encontrada");
+            return new ReservaDto
+            {
+                ReservaId = result.ReservaId,
+                MesaId = result.MesaId,
+                ClienteId = result.ClienteId,
+                TurnoId = result.TurnoId,
+                CantidadPersonas = result.CantidaPersonas,
+                Fecha = result.Fecha,
+                HoraInicio = result.HoraInicio,
+                HoraFin = result.HoraFin
+            };
         }
 
         public List<ReservaDto> BuscarReservasPorEstadoId(int estadoId)
@@ -114,14 +114,14 @@ namespace ProyectoIProgra2.Servicios
         .Where(r => r.EstadoDeReservaId == estadoId)
         .Select(r => new ReservaDto
         {
-             ReservaId = r.ReservaId,
-             MesaId = r.MesaId,
-             ClienteId = r.ClienteId,
-             TurnoId = r.TurnoId,
-             CantidadPersonas = r.CantidaPersonas,
-             Fecha = r.Fecha,
-             HoraInicio = r.HoraInicio,
-             HoraFin = r.HoraFin
+            ReservaId = r.ReservaId,
+            MesaId = r.MesaId,
+            ClienteId = r.ClienteId,
+            TurnoId = r.TurnoId,
+            CantidadPersonas = r.CantidaPersonas,
+            Fecha = r.Fecha,
+            HoraInicio = r.HoraInicio,
+            HoraFin = r.HoraFin
         })
         .ToList();
         }
@@ -156,14 +156,14 @@ namespace ProyectoIProgra2.Servicios
 
             return new ReservaDto
             {
-               ReservaId = reserva.ReservaId,
-               MesaId = reserva.MesaId,
-               ClienteId = reserva.ClienteId,
-               TurnoId = reserva.TurnoId,
-               CantidadPersonas = reserva.CantidaPersonas,
-               Fecha = reserva.Fecha,
-               HoraInicio = reserva.HoraInicio,
-               HoraFin = reserva.HoraFin
+                ReservaId = reserva.ReservaId,
+                MesaId = reserva.MesaId,
+                ClienteId = reserva.ClienteId,
+                TurnoId = reserva.TurnoId,
+                CantidadPersonas = reserva.CantidaPersonas,
+                Fecha = reserva.Fecha,
+                HoraInicio = reserva.HoraInicio,
+                HoraFin = reserva.HoraFin
             };
         }
 
@@ -198,11 +198,11 @@ namespace ProyectoIProgra2.Servicios
         public bool ComprobarDisponibilidadDeReservas(int mesaId, DateTime inicio, DateTime fin)
         {
             bool sinReservas = !_MyAppDbContext.Reservas.Any(r =>
-               r.MesaId == mesaId &&
-               r.EstadoDeReservaId != 2 &&
-               inicio < r.HoraFin &&
-               fin > r.HoraInicio
-           );
+                r.MesaId == mesaId &&
+                r.EstadoDeReservaId != 2 &&
+                inicio < r.HoraFin &&
+                fin > r.HoraInicio
+            );
             bool sinBloqueos = !_MyAppDbContext.BloqueosMesas.Any(b =>
                 b.MesaId == mesaId &&
                 inicio < b.HoraFin &&
@@ -274,14 +274,14 @@ namespace ProyectoIProgra2.Servicios
             return _MyAppDbContext.Reservas
                 .Select(r => new ReservaDto
                 {
-                     ReservaId = r.ReservaId,
-                     MesaId = r.MesaId,
-                     ClienteId = r.ClienteId,
-                     TurnoId = r.TurnoId,
-                     CantidadPersonas = r.CantidaPersonas,
-                     Fecha = r.Fecha,
-                     HoraInicio = r.HoraInicio,
-                     HoraFin = r.HoraFin
+                    ReservaId = r.ReservaId,
+                    MesaId = r.MesaId,
+                    ClienteId = r.ClienteId,
+                    TurnoId = r.TurnoId,
+                    CantidadPersonas = r.CantidaPersonas,
+                    Fecha = r.Fecha,
+                    HoraInicio = r.HoraInicio,
+                    HoraFin = r.HoraFin
                 })
                 .ToList();
         }
@@ -292,14 +292,14 @@ namespace ProyectoIProgra2.Servicios
                 .Where(r => r.ClienteId == clienteId)
                 .Select(r => new ReservaDto
                 {
-                     ReservaId = r.ReservaId,
-                     MesaId = r.MesaId,
-                     ClienteId = r.ClienteId,
-                     TurnoId = r.TurnoId,
-                     CantidadPersonas = r.CantidaPersonas,
-                     Fecha = r.Fecha,
-                     HoraInicio = r.HoraInicio,
-                     HoraFin = r.HoraFin
+                    ReservaId = r.ReservaId,
+                    MesaId = r.MesaId,
+                    ClienteId = r.ClienteId,
+                    TurnoId = r.TurnoId,
+                    CantidadPersonas = r.CantidaPersonas,
+                    Fecha = r.Fecha,
+                    HoraInicio = r.HoraInicio,
+                    HoraFin = r.HoraFin
                 })
                 .ToList();
         }
@@ -310,14 +310,14 @@ namespace ProyectoIProgra2.Servicios
             .Where(r => r.Fecha.Date == fecha.Date)
             .Select(r => new ReservaDto
             {
-                 ReservaId = r.ReservaId,
-                 MesaId = r.MesaId,
-                 ClienteId = r.ClienteId,
-                 TurnoId = r.TurnoId,
-                 CantidadPersonas = r.CantidaPersonas,
-                 Fecha = r.Fecha,
-                 HoraInicio = r.HoraInicio,
-                 HoraFin = r.HoraFin
+                ReservaId = r.ReservaId,
+                MesaId = r.MesaId,
+                ClienteId = r.ClienteId,
+                TurnoId = r.TurnoId,
+                CantidadPersonas = r.CantidaPersonas,
+                Fecha = r.Fecha,
+                HoraInicio = r.HoraInicio,
+                HoraFin = r.HoraFin
             })
             .ToList();
         }
@@ -360,27 +360,27 @@ namespace ProyectoIProgra2.Servicios
 
         public bool ValidarReserva(ReservaDto reserva)
         {
-          if (reserva.HoraInicio >= reserva.HoraFin)
+            if (reserva.HoraInicio >= reserva.HoraFin)
                 return false;
 
-          var cliente = _MyAppDbContext.Clientes.Find(reserva.ClienteId);
-          if (cliente == null)
+            var cliente = _MyAppDbContext.Clientes.Find(reserva.ClienteId);
+            if (cliente == null)
                 return false;
 
-          if (cliente.Ced == 0 || cliente.Tel == 0)
-          return false;
+            if (cliente.Ced == 0 || cliente.Tel == 0)
+            return false;
 
-          var mesa = _MyAppDbContext.Mesas.Find(reserva.MesaId);
-          if (mesa == null || mesa.Capacidad < reserva.CantidadPersonas) // note typo fix CantidadPersonas instead of CantidaPersonas here since it's a DTO now
-          return false;
+            var mesa = _MyAppDbContext.Mesas.Find(reserva.MesaId);
+            if (mesa == null || mesa.Capacidad < reserva.CantidadPersonas) // note typo fix CantidadPersonas instead of CantidaPersonas here since it's a DTO now
+            return false;
 
-          if (!EstaDentroDeTurno(reserva.HoraInicio, reserva.HoraFin))
-          return false;
+            if (!EstaDentroDeTurno(reserva.HoraInicio, reserva.HoraFin))
+            return false;
 
-         if (!ComprobarDisponibilidadDeReservas(reserva.MesaId, reserva.HoraInicio, reserva.HoraFin))
-         return false;
+            if (!ComprobarDisponibilidadDeReservas(reserva.MesaId, reserva.HoraInicio, reserva.HoraFin))
+            return false;
 
-         return true;
+            return true;
         }
     }
 }
