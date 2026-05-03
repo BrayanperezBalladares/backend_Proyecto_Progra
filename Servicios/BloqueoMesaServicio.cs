@@ -91,11 +91,13 @@ namespace ProyectoIProgra2.Servicios
             }
             else
             {
+                var mesaIds = mesas.Select(m => m.MesaId).ToList();
+
                 var bloqueos = _MyAppDbContext.BloqueosMesas
                     .Where(b =>
                         b.HoraInicio == inicio &&
                         b.HoraFin == fin &&
-                        mesas.Any(m => m.MesaId == b.MesaId))
+                        mesaIds.Contains(b.MesaId))
                     .ToList();
 
                 _MyAppDbContext.BloqueosMesas.RemoveRange(bloqueos);
