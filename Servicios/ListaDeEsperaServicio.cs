@@ -100,9 +100,12 @@ namespace ProyectoIProgra2.Servicios
             {
                 ReservaId = nuevaReserva.ReservaId,
                 ClienteId = nuevaReserva.ClienteId,
+                MesaId = nuevaReserva.MesaId,
                 TurnoId = nuevaReserva.TurnoId,
                 CantidadPersonas = nuevaReserva.CantidaPersonas,
-                Fecha = nuevaReserva.Fecha
+                Fecha = nuevaReserva.Fecha,
+                HoraInicio = nuevaReserva.HoraInicio,
+                HoraFin = nuevaReserva.HoraFin
             };
 
 
