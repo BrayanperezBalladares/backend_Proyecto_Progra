@@ -307,7 +307,9 @@ namespace ProyectoIProgra2.Servicios
         public List<ReservaDto> ObtenerReservasPorFecha(DateTime fecha)
         {
             return _MyAppDbContext.Reservas
-            .Where(r => r.Fecha.Date == fecha.Date)
+            .Where(r => r.Fecha.Year == fecha.Year &&
+            r.Fecha.Month == fecha.Month &&
+            r.Fecha.Day == fecha.Day)
             .Select(r => new ReservaDto
             {
                 ReservaId = r.ReservaId,
