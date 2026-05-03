@@ -303,27 +303,6 @@ namespace ProyectoIProgra2.Servicios
                 })
                 .ToList();
         }
-
-        public List<ReservaDto> ObtenerReservasPorFecha(DateTime fecha)
-        {
-            return _MyAppDbContext.Reservas
-            .Where(r => r.Fecha.Year == fecha.Year &&
-            r.Fecha.Month == fecha.Month &&
-            r.Fecha.Day == fecha.Day)
-            .Select(r => new ReservaDto
-            {
-                ReservaId = r.ReservaId,
-                MesaId = r.MesaId,
-                ClienteId = r.ClienteId,
-                TurnoId = r.TurnoId,
-                CantidadPersonas = r.CantidaPersonas,
-                Fecha = r.Fecha,
-                HoraInicio = r.HoraInicio,
-                HoraFin = r.HoraFin
-            })
-            .ToList();
-        }
-
         public void ProcesarListaDeEspera(int mesaId, DateTime inicio, DateTime fin)
         {
             var mesa = _MyAppDbContext.Mesas.Find(mesaId);
