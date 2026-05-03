@@ -34,7 +34,7 @@ namespace ProyectoIProgra2.Servicios
 
         }
 
-        public List<BloqueoMesaDto> ActualizarZona(int zonaId, DateTime inicio, DateTime fin, bool activa)
+        public List<BloqueoMesaDto> ActualizarZona(int zonaId, DateTime HoraInicio, DateTime HoraFin, bool activa)
         {
             var zona = _MyAppDbContext.Zonas.Find(zonaId);
             if (zona == null)
@@ -57,8 +57,8 @@ namespace ProyectoIProgra2.Servicios
                         .Where(r =>
                         r.MesaId == mesa.MesaId &&
                         r.EstadoDeReservaId == 1 &&
-                        r.HoraInicio < fin &&
-                        r.HoraFin > inicio)
+                        r.HoraInicio < HoraFin &&
+                        r.HoraFin > HoraInicio)
                         .ToList();
 
                     reservasAfectadas.ForEach(r =>
@@ -69,9 +69,9 @@ namespace ProyectoIProgra2.Servicios
                     var bloqueo = new BloqueoMesa
                     {
                         MesaId = mesa.MesaId,
-                        Fecha = inicio.Date,
-                        HoraInicio = inicio,
-                        HoraFin = fin,
+                        Fecha = HoraInicio.Date,
+                        HoraInicio = HoraInicio,
+                        HoraFin = HoraFin,
                         Detalle = "Zona bloqueada"
                     };
 
@@ -93,8 +93,8 @@ namespace ProyectoIProgra2.Servicios
             {
                 var bloqueos = _MyAppDbContext.BloqueosMesas
                     .Where(b =>
-                        b.HoraInicio == inicio &&
-                        b.HoraFin == fin &&
+                        b.HoraInicio == HoraInicio &&
+                        b.HoraFin == HoraFin &&
                         mesas.Any(m => m.MesaId == b.MesaId))
                     .ToList();
 
@@ -209,12 +209,12 @@ namespace ProyectoIProgra2.Servicios
 
         }
 
-        public bool ExisteInterferenciaBloqueoMesa(int mesaId, DateTime inicio, DateTime fin)
+        public bool ExisteInterferenciaBloqueoMesa(int mesaId, DateTime HoraInicio, DateTime HoraFin)
         {
             return _MyAppDbContext.BloqueosMesas
                     .Any(b => b.MesaId == mesaId &&
-                        b.HoraInicio < fin &&
-                        b.HoraFin > inicio);
+                        b.HoraInicio < HoraFin &&
+                        b.HoraFin > HoraInicio);
 
         }
 
