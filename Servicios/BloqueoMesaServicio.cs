@@ -19,7 +19,7 @@ namespace ProyectoIProgra2.Servicios
                 throw new Exception("Bloqueo no encontrado");
 
             if (dto.HoraInicio >= dto.HoraFin)
-                throw new Exception("HoraFin debe ser despues a la de HoraInicio");
+                throw new Exception("HoraFin  debe ser despues a la de HoraInicio");
 
             result.MesaId = dto.MesaId;
             result.HoraInicio = dto.HoraInicio;
@@ -45,7 +45,7 @@ namespace ProyectoIProgra2.Servicios
                 .ToList();
 
             if (!mesas.Any())
-                throw new Exception("No se encontraron mesas en esa zona");
+                throw new Exception("No se encontraron mesas  en esa zona");
 
             var resultado = new List<BloqueoMesaDto>();
 
