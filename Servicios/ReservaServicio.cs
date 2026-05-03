@@ -15,15 +15,15 @@ namespace ProyectoIProgra2.Servicios
         public ReservaDto ActualizarReserva(int reservaId, ReservaDto dto)
         {
         var result = _MyAppDbContext.Reservas.Find(reservaId);
-            if (result == null)
-            throw new Exception("Reserva no encontrada");
+         if (result == null)
+         throw new Exception("Reserva no encontrada");
 
-            if (result.EstadoDeReservaId != 1)
-            throw new Exception("Solo se pueden modificar reservas en estado Activo");
+         if (result.EstadoDeReservaId != 1)
+         throw new Exception("Solo se pueden modificar reservas en estado Activo");
 
             bool cambioHorarioMesa = result.MesaId != dto.MesaId ||
-            result.HoraInicio != dto.HoraInicio ||
-            result.HoraFin != dto.HoraFin;
+         result.HoraInicio != dto.HoraInicio ||
+         result.HoraFin != dto.HoraFin;
             ;
 
             if (cambioHorarioMesa)
@@ -45,8 +45,8 @@ namespace ProyectoIProgra2.Servicios
         result.HoraFin = dto.HoraFin;
         result.CantidaPersonas = dto.CantidadPersonas;
         result.MesaId = dto.MesaId;
-            _MyAppDbContext.Update(result);
-            _MyAppDbContext.SaveChanges();
+         _MyAppDbContext.Update(result);
+         _MyAppDbContext.SaveChanges();
 
         return new ReservaDto
         {
@@ -195,18 +195,18 @@ namespace ProyectoIProgra2.Servicios
             }; ;
         }
 
-        public bool ComprobarDisponibilidadDeReservas(int mesaId, DateTime HoraInicio, DateTime HoraFin)
+        public bool ComprobarDisponibilidadDeReservas(int mesaId, DateTime inicio, DateTime fin)
         {
             bool sinReservas = !_MyAppDbContext.Reservas.Any(r =>
                 r.MesaId == mesaId &&
                 r.EstadoDeReservaId != 2 &&
-                HoraInicio < r.HoraFin &&
-                HoraFin > r.HoraInicio
+                inicio < r.HoraFin &&
+                fin > r.HoraInicio
             );
             bool sinBloqueos = !_MyAppDbContext.BloqueosMesas.Any(b =>
                 b.MesaId == mesaId &&
-                HoraInicio < b.HoraFin &&
-                HoraFin > b.HoraInicio
+                inicio < b.HoraFin &&
+                fin > b.HoraInicio
             );
 
             return sinReservas && sinBloqueos;
@@ -258,10 +258,10 @@ namespace ProyectoIProgra2.Servicios
             _MyAppDbContext.SaveChanges();
         }
 
-        public bool EstaDentroDeTurno(DateTime HoraInicio, DateTime HoraFin)
+        public bool EstaDentroDeTurno(DateTime inicio, DateTime fin)
         {
-            int horaInicio = HoraInicio.Hour;
-            int horaFin = HoraFin.Hour;
+            int horaInicio = inicio.Hour;
+            int horaFin = fin.Hour;
 
             return _MyAppDbContext.Turnos.Any(t =>
                 t.HoraInicio <= horaInicio &&
@@ -322,7 +322,7 @@ namespace ProyectoIProgra2.Servicios
             .ToList();
         }
 
-        public void ProcesarListaDeEspera(int mesaId, DateTime HoraInicio, DateTime HoraFin)
+        public void ProcesarListaDeEspera(int mesaId, DateTime inicio, DateTime fin)
         {
             var mesa = _MyAppDbContext.Mesas.Find(mesaId);
             if (mesa == null) return;
@@ -336,16 +336,16 @@ namespace ProyectoIProgra2.Servicios
                 if (persona.CantidadPersonas > mesa.Capacidad)
                     continue;
 
-                if (!ComprobarDisponibilidadDeReservas(mesaId, HoraInicio, HoraFin))
+                if (!ComprobarDisponibilidadDeReservas(mesaId, inicio, fin))
                     break;
 
                 var nuevaReserva = new Reserva
                 {
                     ClienteId = persona.ClienteId,
                     MesaId = mesaId,
-                    Fecha = HoraInicio.Date,
-                    HoraInicio = HoraInicio,
-                    HoraFin = HoraFin,
+                    Fecha = inicio.Date,
+                    HoraInicio = inicio,
+                    HoraFin = fin,
                     CantidaPersonas = persona.CantidadPersonas,
                     EstadoDeReservaId = 1
                 };

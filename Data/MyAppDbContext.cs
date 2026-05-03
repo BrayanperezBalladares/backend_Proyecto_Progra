@@ -21,7 +21,7 @@ namespace ProyectoIProgra2.Data
         public DbSet<ListaDeEspera> ListasDeEspera { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Zonas
+            // ZONAS
             modelBuilder.Entity<Zona>().HasData(
                 new Zona { ZonaId = 1, Seccion = "Interior" },
                 new Zona { ZonaId = 2, Seccion = "Terraza" },
@@ -29,7 +29,7 @@ namespace ProyectoIProgra2.Data
                 new Zona { ZonaId = 4, Seccion = "VIP" }
             );
 
-            // Mesas
+            // MESAS
             modelBuilder.Entity<Mesa>().HasData(
                 new Mesa { MesaId = 1, Capacidad = 4, ZonaId = 1 },
                 new Mesa { MesaId = 2, Capacidad = 2, ZonaId = 1 },
@@ -43,14 +43,16 @@ namespace ProyectoIProgra2.Data
                 new Mesa { MesaId = 10, Capacidad = 8, ZonaId = 4 }
             );
 
-            // Turnos
+            // TURNOS (solo una vez)
             modelBuilder.Entity<Turno>().HasData(
-                new Turno { TurnoId = 1, HoraInicio = 8, HoraFin = 11 },//Desayuno
-                new Turno { TurnoId = 2, HoraInicio = 12, HoraFin = 15 },//Almuerzo
-                new Turno { TurnoId = 3, HoraInicio = 18, HoraFin = 22 }//Cena
+                new Turno { TurnoId = 1, HoraInicio = 8, HoraFin = 11 },
+                new Turno { TurnoId = 2, HoraInicio = 12, HoraFin = 15 },
+                new Turno { TurnoId = 3, HoraInicio = 18, HoraFin = 22 }
             );
 
-            // Estados de reservas
+
+
+            // ESTADOS DE RESERVA
             modelBuilder.Entity<EstadoDeReserva>().HasData(
                 new EstadoDeReserva { EstadoDeReservaId = 1, Estado = "Activa" },
                 new EstadoDeReserva { EstadoDeReservaId = 2, Estado = "Cancelada" },

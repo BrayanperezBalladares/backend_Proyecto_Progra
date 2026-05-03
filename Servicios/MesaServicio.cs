@@ -22,7 +22,7 @@ namespace ProyectoIProgra2.Servicios
 
         }
 
-        public Mesa ComprobarDisponibilidadMesa(int mesaId, DateTime HoraInicio, DateTime HoraFin)
+        public Mesa ComprobarDisponibilidadMesa(int mesaId, DateTime inicio, DateTime fin)
         {
             var mesa = _MyAppDbContext.Mesas.Find(mesaId);
             if (mesa == null)
@@ -31,14 +31,14 @@ namespace ProyectoIProgra2.Servicios
             bool sinReservas = !_MyAppDbContext.Reservas.Any(r =>
             r.MesaId == mesaId &&
             r.EstadoDeReservaId != 2 &&
-            HoraInicio < r.HoraFin &&
-            HoraFin > r.HoraInicio
+            inicio < r.HoraFin &&
+            fin > r.HoraInicio
             );
 
             bool sinBloqueos = !_MyAppDbContext.BloqueosMesas.Any(b =>
             b.MesaId == mesaId &&
-            HoraInicio < b.HoraFin &&
-            HoraFin > b.HoraInicio
+            inicio < b.HoraFin &&
+            fin > b.HoraInicio
             );
 
             if (!sinReservas)
@@ -71,7 +71,7 @@ namespace ProyectoIProgra2.Servicios
             return _MyAppDbContext.Mesas.ToList();
         }
 
-        public List<Mesa> ObtenerMesasDisponibles(DateTime HoraInicio, DateTime HoraFin, int capacidad)
+        public List<Mesa> ObtenerMesasDisponibles(DateTime inicio, DateTime fin, int capacidad)
         {
         return _MyAppDbContext.Mesas
         .Where(m =>
@@ -80,13 +80,13 @@ namespace ProyectoIProgra2.Servicios
         !_MyAppDbContext.Reservas.Any(r =>
             r.MesaId == m.MesaId &&
             r.EstadoDeReservaId != 2 &&
-            HoraInicio < r.HoraFin &&
-            HoraFin > r.HoraInicio) &&
+            inicio < r.HoraFin &&
+            fin > r.HoraInicio) &&
 
         !_MyAppDbContext.BloqueosMesas.Any(b =>
             b.MesaId == m.MesaId &&
-            HoraInicio < b.HoraFin &&
-            HoraFin > b.HoraInicio)
+            inicio < b.HoraFin &&
+            fin > b.HoraInicio)
             )
             .ToList();
 
@@ -94,9 +94,9 @@ namespace ProyectoIProgra2.Servicios
 
         public List<Mesa> ObtenerMesasPorCapacidad(int capacidad)
         {
-            return _MyAppDbContext.Mesas
-            .Where(m => m.Capacidad >= capacidad)
-            .ToList();
+        return _MyAppDbContext.Mesas
+        .Where(m => m.Capacidad >= capacidad)
+        .ToList();
         }
 
         public List<Mesa> ObtenerMesasPorZona(int zonaId)

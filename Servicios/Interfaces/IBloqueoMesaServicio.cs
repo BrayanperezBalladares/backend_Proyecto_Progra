@@ -13,8 +13,8 @@ namespace ProyectoIProgra2.Servicios
         public BloqueoMesaDto ActualizarBloqueoMesa(int bloqueoId, BloqueoMesaDto bloqueo); 
 
         public void EliminarBloqueoMesa(int bloqueoId);
-        public bool ExisteInterferenciaBloqueoMesa(int mesaId, DateTime HoraInicio, DateTime HoraFin);
+        public bool ExisteInterferenciaBloqueoMesa(int mesaId, DateTime inicio, DateTime fin);
         public BloqueoMesaDto DesbloquearMesa(int mesaId);
-        public List<BloqueoMesaDto> ActualizarZona(int zonaId, DateTime HoraInicio, DateTime HoraFin, bool activa); //se va llamar "actualizar zona" y va a recibir un booleano para la nueva entidad "Activa"
+        public List<BloqueoMesaDto> ActualizarZona(int zonaId, DateTime inicio, DateTime fin, bool activa); //se va llamar "actualizar zona" y va a recibir un booleano para la nueva entidad "Activa"
     }
 }
