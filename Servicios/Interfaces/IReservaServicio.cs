@@ -4,7 +4,6 @@ public interface IReservaServicio
 {
     public List<ReservaDto> ListarReservas();
     public ReservaDto BuscarReservaPorId(int reservaId);
-    public List<ReservaDto> ObtenerReservasPorFecha(DateTime fecha);
     public List<ReservaDto> ObtenerReservaPorClienteId(int clienteId);
     public ReservaDto CrearReserva(ReservaDto reserva);
     public ReservaDto ActualizarReserva(int reservaId, ReservaDto dto);
