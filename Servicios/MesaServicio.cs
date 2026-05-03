@@ -94,9 +94,9 @@ namespace ProyectoIProgra2.Servicios
 
         public List<Mesa> ObtenerMesasPorCapacidad(int capacidad)
         {
-        return _MyAppDbContext.Mesas
-        .Where(m => m.Capacidad >= capacidad)
-        .ToList();
+            return _MyAppDbContext.Mesas
+            .Where(m => m.Capacidad >= capacidad)
+            .ToList();
         }
 
         public List<Mesa> ObtenerMesasPorZona(int zonaId)
