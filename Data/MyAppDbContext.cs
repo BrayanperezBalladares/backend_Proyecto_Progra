@@ -65,7 +65,7 @@ namespace ProyectoIProgra2.Data
             // TURNOS (solo una vez)
             modelBuilder.Entity<Turno>().HasData(
                 new Turno { TurnoId = 1, HoraInicio = 8, HoraFin = 11 },
-                new Turno { TurnoId = 2, HoraInicio = 12, HoraFin = 15 },
+                new Turno { TurnoId = 2, HoraInicio = 12, HoraFin = 17 },
                 new Turno { TurnoId = 3, HoraInicio = 18, HoraFin = 22 }
             );
 
