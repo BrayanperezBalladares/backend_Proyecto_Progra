@@ -29,20 +29,16 @@ builder.Services.AddScoped<ITurnoServicio, TurnoServicio>();
 
 builder.Services.AddScoped<IZonaServicio, ZonaServicio>();
 
-var supabaseJwtSecret = builder.Configuration["SUPABASE_JWT_SECRET"]
-    ?? throw new InvalidOperationException("SUPABASE_JWT_SECRET is required");
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        options.Authority = "https://mmmfeijsrhchdivgwzhm.supabase.co/auth/v1";
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
             ValidIssuer = "https://mmmfeijsrhchdivgwzhm.supabase.co/auth/v1",
             ValidateAudience = false,
             ValidateLifetime = true,
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Convert.FromBase64String(supabaseJwtSecret)),
             ClockSkew = TimeSpan.FromSeconds(30),
         };
     });
