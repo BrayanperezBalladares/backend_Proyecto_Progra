@@ -35,7 +35,9 @@ namespace ProyectoIProgra2.Servicios
                 ClienteId = result.ClienteId,
                 Ced = result.Ced,
                 Nombre = result.Nombre,
-                Apellidos = result.Apellidos
+                Apellidos = result.Apellidos,
+                Tel = result.Tel,
+                Email = result.Email
             };
         }
 
@@ -52,7 +54,9 @@ namespace ProyectoIProgra2.Servicios
                 ClienteId = result.ClienteId,
                 Ced = result.Ced,
                 Nombre = result.Nombre,
-                Apellidos = result.Apellidos
+                Apellidos = result.Apellidos,
+                Tel = result.Tel,
+                Email = result.Email
             };
         }
 
@@ -67,7 +71,9 @@ namespace ProyectoIProgra2.Servicios
                 ClienteId = result.ClienteId,
                 Ced = result.Ced,
                 Nombre = result.Nombre,
-                Apellidos = result.Apellidos
+                Apellidos = result.Apellidos,
+                Tel = result.Tel,
+                Email = result.Email
             };
         }
 
@@ -78,8 +84,8 @@ namespace ProyectoIProgra2.Servicios
                 Ced = dto.Ced,
         Nombre = dto.Nombre,
         Apellidos = dto.Apellidos,
-        Tel = 0,
-        Email = ""
+        Tel = dto.Tel,
+        Email = dto.Email ?? ""
     };
 
         _MyAppDbContext.Clientes.Add(cliente);
@@ -90,7 +96,9 @@ namespace ProyectoIProgra2.Servicios
                 ClienteId = cliente.ClienteId,
                 Ced = cliente.Ced,
                 Nombre = cliente.Nombre,
-                Apellidos = cliente.Apellidos
+                Apellidos = cliente.Apellidos,
+                Tel = cliente.Tel,
+                Email = cliente.Email
             };
         }
 
@@ -120,7 +128,9 @@ namespace ProyectoIProgra2.Servicios
                     ClienteId = c.ClienteId,
                     Ced = c.Ced,
                     Nombre = c.Nombre,
-                    Apellidos = c.Apellidos
+                    Apellidos = c.Apellidos,
+                    Tel = c.Tel,
+                    Email = c.Email
                 })
                 .ToList();
         }

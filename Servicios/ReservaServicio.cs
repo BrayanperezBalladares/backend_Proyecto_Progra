@@ -104,7 +104,8 @@ namespace ProyectoIProgra2.Servicios
                 CantidadPersonas = result.CantidaPersonas,
                 Fecha = result.Fecha,
                 HoraInicio = result.HoraInicio,
-                HoraFin = result.HoraFin
+                HoraFin = result.HoraFin,
+                EstadoDeReservaId = result.EstadoDeReservaId
             };
         }
 
@@ -121,7 +122,8 @@ namespace ProyectoIProgra2.Servicios
             CantidadPersonas = r.CantidaPersonas,
             Fecha = r.Fecha,
             HoraInicio = r.HoraInicio,
-            HoraFin = r.HoraFin
+            HoraFin = r.HoraFin,
+            EstadoDeReservaId = r.EstadoDeReservaId
         })
         .ToList();
         }
@@ -281,7 +283,8 @@ namespace ProyectoIProgra2.Servicios
                     CantidadPersonas = r.CantidaPersonas,
                     Fecha = r.Fecha,
                     HoraInicio = r.HoraInicio,
-                    HoraFin = r.HoraFin
+                    HoraFin = r.HoraFin,
+                    EstadoDeReservaId = r.EstadoDeReservaId
                 })
                 .ToList();
         }
@@ -299,7 +302,8 @@ namespace ProyectoIProgra2.Servicios
                     CantidadPersonas = r.CantidaPersonas,
                     Fecha = r.Fecha,
                     HoraInicio = r.HoraInicio,
-                    HoraFin = r.HoraFin
+                    HoraFin = r.HoraFin,
+                    EstadoDeReservaId = r.EstadoDeReservaId
                 })
                 .ToList();
         }

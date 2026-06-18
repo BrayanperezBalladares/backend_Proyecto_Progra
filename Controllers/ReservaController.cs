@@ -48,6 +48,13 @@ namespace ProyectoIProgra2.Controllers
 
         // GET: api/reserva/fecha?fecha=2025-01-01
         [HttpGet("fecha")]
+        public ActionResult<List<ReservaDto>> BuscarReservasPorFecha([FromQuery] DateTime fecha)
+        {
+            var reservas = _reservaServicio.ListarReservas()
+                .Where(r => r.Fecha.Date == fecha.Date)
+                .ToList();
+            return Ok(reservas);
+        }
 
         // GET: api/reserva/estado/1
         [HttpGet("estado/{estadoId}")]

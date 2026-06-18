@@ -10,5 +10,6 @@
         public DateTime Fecha { get; set; }
         public DateTime HoraInicio { get; set; }
         public DateTime HoraFin { get; set; }
+        public int EstadoDeReservaId { get; set; }
     }
 }
