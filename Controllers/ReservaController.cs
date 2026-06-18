@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProyectoIProgra2.DTOs;
 using ProyectoIProgra2.Servicios;
+using System.Security.Claims;
 
 namespace ProyectoIProgra2.Controllers
 {
@@ -61,6 +63,23 @@ namespace ProyectoIProgra2.Controllers
         public ActionResult<List<ReservaDto>> BuscarReservasPorEstadoId(int estadoId)
         {
             var reservas = _reservaServicio.BuscarReservasPorEstadoId(estadoId);
+            return Ok(reservas);
+        }
+
+        // GET: api/reserva/mis-reservas
+        [HttpGet("mis-reservas")]
+        [Authorize]
+        public ActionResult<List<ReservaDto>> MisReservas()
+        {
+            var supabaseUid = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                ?? User.FindFirst("sub")?.Value;
+            var email = User.FindFirst(ClaimTypes.Email)?.Value
+                ?? User.FindFirst("email")?.Value;
+
+            if (string.IsNullOrEmpty(supabaseUid))
+                return Unauthorized();
+
+            var reservas = _reservaServicio.ObtenerPorClienteSupabaseUid(supabaseUid, email ?? "");
             return Ok(reservas);
         }
 

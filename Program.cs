@@ -49,6 +49,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<IClaimsTransformation, SupabaseRoleClaimsTransformer>();
+builder.Services.AddHttpClient();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>

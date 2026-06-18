@@ -343,6 +343,43 @@ namespace ProyectoIProgra2.Servicios
             }
             }
 
+        public List<ReservaDto> ObtenerPorClienteSupabaseUid(string supabaseUid, string email)
+        {
+            // Auto-link by email if SupabaseUid not yet set
+            var cliente = _MyAppDbContext.Clientes
+                .FirstOrDefault(c => c.SupabaseUid == supabaseUid);
+
+            if (cliente == null && !string.IsNullOrEmpty(email))
+            {
+                cliente = _MyAppDbContext.Clientes
+                    .FirstOrDefault(c => c.Email == email && c.SupabaseUid == null);
+
+                if (cliente != null)
+                {
+                    cliente.SupabaseUid = supabaseUid;
+                    _MyAppDbContext.SaveChanges();
+                }
+            }
+
+            if (cliente == null) return [];
+
+            return _MyAppDbContext.Reservas
+                .Where(r => r.ClienteId == cliente.ClienteId)
+                .Select(r => new ReservaDto
+                {
+                    ReservaId = r.ReservaId,
+                    MesaId = r.MesaId,
+                    ClienteId = r.ClienteId,
+                    TurnoId = r.TurnoId,
+                    CantidadPersonas = r.CantidaPersonas,
+                    Fecha = r.Fecha,
+                    HoraInicio = r.HoraInicio,
+                    HoraFin = r.HoraFin,
+                    EstadoDeReservaId = r.EstadoDeReservaId
+                })
+                .ToList();
+        }
+
         public bool ValidarReserva(ReservaDto reserva)
         {
             if (reserva.HoraInicio >= reserva.HoraFin)

@@ -16,5 +16,6 @@ public interface IReservaServicio
     public bool ComprobarDisponibilidadDeReservas(int mesaId, DateTime inicio, DateTime fin);
     public void ProcesarListaDeEspera(int mesaId, DateTime inicio, DateTime fin);
     public List<ReservaDto> BuscarReservasPorEstadoId(int estado);
+    public List<ReservaDto> ObtenerPorClienteSupabaseUid(string supabaseUid, string email);
 
 }
