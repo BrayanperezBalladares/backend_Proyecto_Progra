@@ -6,6 +6,7 @@ namespace ProyectoIProgra2.Servicios
     {
         public BloqueoMesaDto BuscarBloqueoPorId(int bloqueoId);
 
+        public List<BloqueoMesaDto> ObtenerTodos();
         public List<BloqueoMesaDto> ObtenerBloqueosPorMesaId(int mesaId);
 
         public BloqueoMesaDto CrearBloqueoMesa(BloqueoMesaDto bloqueo);

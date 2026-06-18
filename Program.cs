@@ -1,13 +1,15 @@
 //Program.cs
+using Microsoft.EntityFrameworkCore;
 using ProyectoIProgra2.Data;
 using ProyectoIProgra2.Servicios;
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddScoped<MyAppDbContext>();
+builder.Services.AddDbContext<MyAppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IBloqueoMesaServicio, BloqueoMesaServicio>();
 
@@ -29,13 +31,14 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
     });
 
+var allowedOrigins = builder.Configuration["ALLOWED_ORIGINS"]?.Split(",")
+    ?? ["http://localhost:5173", "http://localhost:5174", "http://127.0.0.1:5173"];
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Frontend", policy =>
         policy
-            .WithOrigins(
-                "http://localhost:5173",
-                "http://127.0.0.1:5173")
+            .WithOrigins(allowedOrigins)
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
@@ -65,7 +68,7 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<MyAppDbContext>();
-    dbContext.Database.EnsureCreated();
+    dbContext.Database.Migrate();
 }
 
 app.Run();

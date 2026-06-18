@@ -6,10 +6,7 @@ namespace ProyectoIProgra2.Data
 
     public class MyAppDbContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseInMemoryDatabase("MyAppDb");
-        }
+        public MyAppDbContext(DbContextOptions<MyAppDbContext> options) : base(options) { }
 
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Mesa> Mesas { get; set; }

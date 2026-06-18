@@ -15,6 +15,13 @@ namespace ProyectoIProgra2.Controllers
             _bloqueoMesaServicio = bloqueoMesaServicio;
         }
 
+        // GET: api/bloqueomesa
+        [HttpGet]
+        public ActionResult<List<BloqueoMesaDto>> ObtenerTodos()
+        {
+            return Ok(_bloqueoMesaServicio.ObtenerTodos());
+        }
+
         // GET: api/bloqueomesa/mesa/5
         [HttpGet("mesa/{mesaId}")]
         public ActionResult<List<BloqueoMesaDto>> ObtenerBloqueosPorMesaId(int mesaId)

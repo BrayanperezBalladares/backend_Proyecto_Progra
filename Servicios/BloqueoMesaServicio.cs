@@ -220,6 +220,21 @@ namespace ProyectoIProgra2.Servicios
 
         }
 
+        public List<BloqueoMesaDto> ObtenerTodos()
+        {
+            return _MyAppDbContext.BloqueosMesas
+                .Select(b => new BloqueoMesaDto
+                {
+                    BloqueoMesaId = b.BloqueoMesaId,
+                    MesaId = b.MesaId,
+                    Fecha = b.Fecha,
+                    HoraInicio = b.HoraInicio,
+                    HoraFin = b.HoraFin,
+                    Detalle = b.Detalle
+                })
+                .ToList();
+        }
+
         public List<BloqueoMesaDto> ObtenerBloqueosPorMesaId(int mesaId)
         {
             return _MyAppDbContext.BloqueosMesas
