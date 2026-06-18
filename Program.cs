@@ -1,5 +1,9 @@
 //Program.cs
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using ProyectoIProgra2.Auth;
 using ProyectoIProgra2.Data;
 using ProyectoIProgra2.Servicios;
 
@@ -24,6 +28,27 @@ builder.Services.AddScoped<IReservaServicio, ReservaServicio>();
 builder.Services.AddScoped<ITurnoServicio, TurnoServicio>();
 
 builder.Services.AddScoped<IZonaServicio, ZonaServicio>();
+
+var supabaseJwtSecret = builder.Configuration["SUPABASE_JWT_SECRET"]
+    ?? throw new InvalidOperationException("SUPABASE_JWT_SECRET is required");
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = "https://mmmfeijsrhchdivgwzhm.supabase.co/auth/v1",
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Convert.FromBase64String(supabaseJwtSecret)),
+            ClockSkew = TimeSpan.FromSeconds(30),
+        };
+    });
+
+builder.Services.AddAuthorization();
+builder.Services.AddScoped<IClaimsTransformation, SupabaseRoleClaimsTransformer>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -61,6 +86,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 }
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
