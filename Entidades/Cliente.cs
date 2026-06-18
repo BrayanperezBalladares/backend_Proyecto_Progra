@@ -9,7 +9,8 @@
             public string Apellidos { get; set; }
             public int Tel { get; set; }
             public string Email { get; set; }
+            public string? SupabaseUid { get; set; }
 
-        
+
     }
 }

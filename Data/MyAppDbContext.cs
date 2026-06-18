@@ -27,6 +27,11 @@ namespace ProyectoIProgra2.Data
             );
 
             //Clientes
+            modelBuilder.Entity<Cliente>()
+                .HasIndex(c => c.SupabaseUid)
+                .IsUnique()
+                .HasFilter("\"SupabaseUid\" IS NOT NULL");
+
             modelBuilder.Entity<Cliente>().HasData(
                 new Cliente { ClienteId = 1, Ced = 101110111, Nombre = "Juan", Apellidos = "Pérez López", Tel = 88881111, Email = "juan@email.com" },
                 new Cliente { ClienteId = 2, Ced = 202220222, Nombre = "María", Apellidos = "González Mora", Tel = 88882222, Email = "maria@email.com" },
